@@ -1,0 +1,8 @@
+.profile__profession {
+  /* border: .5px dashed green; */
+  font-size: 18px;
+  padding-top: 10px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

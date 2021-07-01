@@ -1,2 +1,27 @@
 @import url(../vendor/normalize.css);
 @import url(../vendor/fonts.css);
+@import url(../blocks/page/page.css);
+@import url(../blocks/page/__section/page__section.css);
+@import url(../blocks/page/__section/_place/page__section_place_header.css);
+@import url(../blocks/page/__section/_place/page__section_place_profile.css);
+@import url(../blocks/page/__section/_place/page__section_place_cards.css);
+@import url(../blocks/page/__section/_place/page__section_place_footer.css);
+@import url(../blocks/page-text/page-text.css);
+@import url(../blocks/section-line/section-line.css);
+@import url(../blocks/page-btn/page-btn.css);
+@import url(../blocks/page-btn/_type/page-btn_type_edit.css);
+@import url(../blocks/page-btn/_type/page-btn_type_add.css);
+/*Шапка сайта*/
+@import url(../blocks/header/header.css);
+@import url(../blocks/header/__logo/header__logo.css);
+/*Основная часть сайта*/
+@import url(../blocks/main/main.css);
+@import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__avatar/profile__avatar.css);
+@import url(../blocks/profile/__info/profile__info.css);
+@import url(../blocks/profile/__name/profile__name.css);
+@import url(../blocks/profile/__profession/profile__profession.css);
+@import url(../blocks/cards/cards.css);
+/*Подвал сайта*/
+@import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css);

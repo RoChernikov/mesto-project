@@ -1,0 +1,6 @@
+.profile__info {
+  /* border: .5px dashed red; */
+  margin: 0 30px;
+  display: grid;
+  grid-template-columns: fit-content(400px) min-content;
+}

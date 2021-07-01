@@ -1,0 +1,5 @@
+.header {
+  /* border: .5px dashed white; */
+  display: flex;
+  min-height: 73px;
+}

@@ -1,0 +1,5 @@
+.profile {
+  /* border: .5px dashed white; */
+  display: grid;
+  grid-template-columns: min-content 1fr min-content;
+}
