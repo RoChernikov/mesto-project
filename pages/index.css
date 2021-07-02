@@ -8,7 +8,10 @@
 @import url(../blocks/page/__section/_place/page__section_place_footer.css);
 @import url(../blocks/page-text/page-text.css);
 @import url(../blocks/section-line/section-line.css);
+@import url(../blocks//page-list/page-list.css);
 @import url(../blocks/page-btn/page-btn.css);
+@import url(../blocks/page-btn/__ico/_type/page-btn__ico_type_add.css);
+@import url(../blocks/page-btn/__ico/_type/page-btn__ico_type_edit.css);
 @import url(../blocks/page-btn/_type/page-btn_type_edit.css);
 @import url(../blocks/page-btn/_type/page-btn_type_add.css);
 /*Шапка сайта*/
@@ -21,7 +24,14 @@
 @import url(../blocks/profile/__info/profile__info.css);
 @import url(../blocks/profile/__name/profile__name.css);
 @import url(../blocks/profile/__profession/profile__profession.css);
-@import url(../blocks/cards/cards.css);
+@import url(../blocks/cards/__list/cards__list.css);
+@import url(../blocks/cards/__item/cards__item.css);
+@import url(../blocks/cards/__image/cards__image.css);
+@import url(../blocks/cards/__heading/cards__heading.css);
+@import url(../blocks/cards/__like-btn/cards__like-btn.css);
+@import url(../blocks/cards/__like-btn-ico/__like-btn-ico.css);
+@import url(../blocks/cards/__like-btn-ico/_active/cards__like-btn-ico_active.css);
+
 /*Подвал сайта*/
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);

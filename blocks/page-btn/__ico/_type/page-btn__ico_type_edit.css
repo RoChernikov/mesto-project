@@ -1,0 +1,11 @@
+.page-btn__ico_type_edit {
+  width: 10px;
+  height: 10px;
+}
+
+@media screen and (max-width: 618px) {
+  .page-btn__ico_type_edit {
+    width: 7.5px;
+    height: 7.5px;
+  }
+}

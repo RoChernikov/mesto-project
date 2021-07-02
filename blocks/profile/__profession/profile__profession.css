@@ -6,3 +6,10 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+@media screen and (max-width: 618px) {
+  .profile__profession {
+    font-size: 14px;
+    justify-self: center;
+  }
+}

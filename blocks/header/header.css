@@ -3,3 +3,9 @@
   display: flex;
   min-height: 73px;
 }
+
+@media screen and (max-width: 618px) {
+  .header {
+    min-height: 56px;
+  }
+}

@@ -1,6 +1,12 @@
 .profile__info {
-  /* border: .5px dashed red; */
   margin: 0 30px;
   display: grid;
-  grid-template-columns: fit-content(400px) min-content;
+  grid-template-columns: fit-content(546px) min-content;
+}
+
+@media screen and (max-width: 618px) {
+  .profile__info {
+    margin: 28px auto 0;
+    padding-left: 26px;
+  }
 }

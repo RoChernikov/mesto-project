@@ -1,9 +1,16 @@
 .page-btn_type_edit {
   border: 1px solid white;
-  box-sizing: border-box;
   width: 24px;
   height: 24px;
   align-self: end;
   margin: 0 0 8px 19px;
   align-self: end;
+}
+
+@media screen and (max-width: 618px) {
+  .page-btn_type_edit {
+    margin: 0 0 5px 11px;
+    width: 18px;
+    height: 18px;
+  }
 }

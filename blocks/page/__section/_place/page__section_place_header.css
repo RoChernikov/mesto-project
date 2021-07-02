@@ -1,5 +1,10 @@
 .page__section_place_header {
-  /* border: .5px dashed red; */
   max-width: 934px;
   margin-top: 45px;
+}
+
+@media screen and (max-width: 618px) {
+  .page__section_place_header {
+    margin-top: 28px;
+  }
 }

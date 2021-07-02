@@ -1,10 +1,12 @@
 .page-btn {
+  box-sizing: border-box;
   background: none;
   border: none;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 18px;
+  padding: 0;
   transition: opacity .08s linear, transform .05s linear;
 }
 
