@@ -22,10 +22,11 @@
       <img src="./images/avatar.jpg" alt="Аватар" class="profile__avatar">
       <div class="profile__info">
         <h1 class="profile__name page__text">Жак-Ив Кусто</h1>
-        <button name="btn-edit" type="button" class="page-btn page-btn_type_edit"></button>
+        <button name="btn-edit" type="button" class="page-btn page-btn_type_edit"
+          aria-label="Редактировать профиль"></button>
         <p class="profile__about page__text">Исследователь океана</p>
       </div>
-      <button name="btn-add" type="button" class="page-btn page-btn_type_add"></button>
+      <button name="btn-add" type="button" class="page-btn page-btn_type_add" aria-label="Добавить фото"></button>
     </section>
     <section class="cards page__section page__section_place_cards">
 
@@ -33,32 +34,32 @@
         <li class="cards__item">
           <img src="./images/cards_image/monterey.jpg" alt="Монтерей" class="cards__image">
           <h2 class="cards__heading page__text">Монтерей</h2>
-          <button class="page-btn cards__like-btn" type="button"></button>
+          <button class="page-btn cards__like-btn" type="button" aria-label="Лайк"></button>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image/eyjafjallajokull.jpg" alt="Эйяфьядлайёкюдль" class="cards__image">
           <h2 class="cards__heading page__text">Эйяфьядлайёкюдль</h2>
-          <button class="page-btn cards__like-btn cards__like-btn_active" type="button"></button>
+          <button class="page-btn cards__like-btn cards__like-btn_active" type="button" aria-label="Лайк"></button>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image//catalina.jpeg" alt="Каталина" class="cards__image">
           <h2 class="cards__heading page__text">Каталина</h2>
-          <button class="page-btn cards__like-btn" type="button"></button>
+          <button class="page-btn cards__like-btn" type="button" aria-label="Лайк"></button>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image/mojave.jpeg" alt="Мохаве" class="cards__image">
           <h2 class="cards__heading page__text">Мохаве</h2>
-          <button class="page-btn cards__like-btn" type="button"></button>
+          <button class="page-btn cards__like-btn" type="button" aria-label="Лайк"></button>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image/big-sur.jpg" alt="Биг-Сур" class="cards__image">
           <h2 class="cards__heading page__text">Биг-Сур</h2>
-          <button class="page-btn cards__like-btn" type="button"></button>
+          <button class="page-btn cards__like-btn" type="button" aria-label="Лайк"></button>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image/yosemite.jpeg" alt="Йосемити" class="cards__image">
           <h2 class="cards__heading page__text">Йосемити</h2>
-          <button class="page-btn cards__like-btn" type="button"></button>
+          <button class="page-btn cards__like-btn" type="button" aria-label="Лайк"></button>
         </li>
       </ul>
 
@@ -71,7 +72,7 @@
   <!-- Модальные окна. Модификатор popup_opened открывает модальное окно -->
   <div class="popup">
     <div class="popup__container">
-      <button class="page-btn popup__close-btn" type="button"></button>
+      <button class="page-btn popup__close-btn" type="button" aria-label="Закрыть"></button>
       <h2 class="popup__heading page__text">Редактировать профиль</h2>
       <form class="popup__form" name="profile-edit">
         <fieldset class="popup__form-field">

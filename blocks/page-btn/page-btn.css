@@ -6,6 +6,7 @@
   padding: 0;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
   transition: opacity .08s linear, transform .05s linear;
 }
 
