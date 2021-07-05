@@ -38,6 +38,7 @@
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__container/popup__container.css);
+@import url(../blocks/popup/__container/_type/popup__container_type_edit-form.css);
 @import url(../blocks/popup/__close-ico/popup__close-ico.css);
 @import url(../blocks/popup/__heading/popup__heading.css);
 @import url(../blocks/popup/__profile-edit/popup__profile-edit.css);
