@@ -5,5 +5,4 @@
 
 .cards__like-btn-ico_active:hover {
   opacity: 100%;
-  transform: scale(1.07);
 }

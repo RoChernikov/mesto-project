@@ -1,7 +1,8 @@
 .header {
   /* border: .5px dashed white; */
   display: flex;
-  min-height: 73px;
+  min-height: 74px;
+  border-bottom: 1px solid rgba(84, 84, 84, .7);
 }
 
 @media screen and (max-width: 618px) {

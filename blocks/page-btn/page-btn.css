@@ -13,7 +13,3 @@
 .page-btn:hover {
   opacity: 60%;
 }
-
-.page-btn:active {
-  transform: scale(.97);
-}

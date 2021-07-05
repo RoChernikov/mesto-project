@@ -10,6 +10,5 @@
 @media screen and (max-width: 618px) {
   .profile__about {
     font-size: 14px;
-    justify-self: center;
   }
 }

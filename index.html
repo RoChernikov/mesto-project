@@ -16,62 +16,60 @@
   <header class="header page__section page__section_place_header">
     <div class="header__logo"></div>
   </header>
-  <!-- Декоративная линия-разделитель -->
-  <div class="section-line page__section"></div>
   <!-- Основная часть сайта -->
   <main class="main">
     <section class="profile page__section page__section_place_profile">
       <img src="./images/avatar.jpg" alt="Аватар" class="profile__avatar">
       <div class="profile__info">
-        <h1 class="profile__name page-text">Жак-Ив Кусто</h1>
+        <h1 class="profile__name page__text">Жак-Ив Кусто</h1>
         <button name="btn-edit" type="button" class="page-btn page-btn_type_edit"><img src="./images/btn_edit_ico.svg"
             alt="Редактировать" class="page-btn__ico page-btn__ico_type_edit"></button>
-        <p class="profile__about page-text">Исследователь океана</p>
+        <p class="profile__about page__text">Исследователь океана</p>
       </div>
       <button name="btn-add" type="button" class="page-btn page-btn_type_add"><img src="./images/btn_add_ico.svg"
           alt="Добавить" class="page-btn__ico page-btn__ico_type_add"></button>
     </section>
     <section class="cards page__section page__section_place_cards">
 
-      <ul class="cards__list page-list">
+      <ul class="cards__list page__list">
         <li class="cards__item">
           <img src="./images/cards_image/monterey.jpg" alt="Монтерей" class="cards__image">
-          <h2 class="cards__heading page-text">Монтерей</h2>
+          <h2 class="cards__heading page__text">Монтерей</h2>
           <a href="#" class="cards__like-btn">
             <div class="cards__like-btn-ico "></div>
           </a>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image/eyjafjallajokull.jpg" alt="Эйяфьядлайёкюдль" class="cards__image">
-          <h2 class="cards__heading page-text">Эйяфьядлайёкюдль</h2>
+          <h2 class="cards__heading page__text">Эйяфьядлайёкюдль</h2>
           <a href="#" class="cards__like-btn">
             <div class="cards__like-btn-ico cards__like-btn-ico_active"></div>
           </a>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image//catalina.jpeg" alt="Каталина" class="cards__image">
-          <h2 class="cards__heading page-text">Каталина</h2>
+          <h2 class="cards__heading page__text">Каталина</h2>
           <a href="#" class="cards__like-btn">
             <div class="cards__like-btn-ico"></div>
           </a>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image/mojave.jpeg" alt="Мохаве" class="cards__image">
-          <h2 class="cards__heading page-text">Мохаве</h2>
+          <h2 class="cards__heading page__text">Мохаве</h2>
           <a href="#" class="cards__like-btn">
             <div class="cards__like-btn-ico"></div>
           </a>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image/big-sur.jpg" alt="Биг-Сур" class="cards__image">
-          <h2 class="cards__heading page-text">Биг-Сур</h2>
+          <h2 class="cards__heading page__text">Биг-Сур</h2>
           <a href="#" class="cards__like-btn">
             <div class="cards__like-btn-ico"></div>
           </a>
         </li>
         <li class="cards__item">
           <img src="./images/cards_image/yosemite.jpeg" alt="Йосемити" class="cards__image">
-          <h2 class="cards__heading page-text">Йосемити</h2>
+          <h2 class="cards__heading page__text">Йосемити</h2>
           <a href="#" class="cards__like-btn">
             <div class="cards__like-btn-ico"></div>
           </a>
@@ -82,19 +80,19 @@
   </main>
   <!-- Подвал сайта -->
   <footer class="footer page__section page__section_place_footer">
-    <p class="footer__copyright page-text">&copy; 2021 Mesto Russia</p>
+    <p class="footer__copyright page__text">&copy; 2021 Mesto Russia</p>
   </footer>
   <!-- Модальные окна. Модификатор popup_opened открывает модальное окно -->
-  <div class="popup popup_opened">
-    <div class="popup__container popup__container_type_edit-form">
+  <div class="popup">
+    <div class="popup__container">
       <a href="#" class="popup__close-btn">
         <div class="popup__close-ico"></div>
       </a>
-      <form class="popup__form">
-        <h2 class="popup__heading page-text">Редактировать профиль</h2>
+      <h2 class="popup__heading page__text">Редактировать профиль</h2>
+      <form class="popup__form" name="profile-edit">
         <fieldset class="popup__profile-edit">
-          <input type="text" class="popup__input" placeholder="Имя">
-          <input type="text" class="popup__input" placeholder="О себе">
+          <input type="text" class="popup__input" name="name" placeholder="Имя">
+          <input type="text" class="popup__input" name="about" placeholder="О себе">
           <input type="submit" class="popup__submit" value="Сохранить">
         </fieldset>
       </form>

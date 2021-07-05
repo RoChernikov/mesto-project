@@ -8,5 +8,6 @@
   .profile__info {
     margin: 28px auto 0;
     padding-left: 26px;
+    text-align: center;
   }
 }
