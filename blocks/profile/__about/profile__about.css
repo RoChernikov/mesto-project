@@ -1,4 +1,4 @@
-.profile__profession {
+.profile__about {
   /* border: .5px dashed green; */
   font-size: 18px;
   padding-top: 10px;
@@ -8,7 +8,7 @@
 }
 
 @media screen and (max-width: 618px) {
-  .profile__profession {
+  .profile__about {
     font-size: 14px;
     justify-self: center;
   }

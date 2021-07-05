@@ -1,0 +1,19 @@
+.popup__close-ico {
+  width: 40px;
+  height: 40px;
+  background-image: url(../../../images/popup-close-ico.svg);
+  background-size: contain;
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  transform: rotate(45deg);
+}
+
+@media screen and (max-width: 618px) {
+  .popup__close-ico {
+    width: 26px;
+    height: 26px;
+    top: -45px;
+    right: 5px;
+  }
+}
