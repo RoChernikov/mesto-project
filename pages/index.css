@@ -9,8 +9,6 @@
 @import url(../blocks/page/__text/page__text.css);
 @import url(../blocks/page/__list/page__list.css);
 @import url(../blocks/page-btn/page-btn.css);
-@import url(../blocks/page-btn/__ico/_type/page-btn__ico_type_add.css);
-@import url(../blocks/page-btn/__ico/_type/page-btn__ico_type_edit.css);
 @import url(../blocks/page-btn/_type/page-btn_type_edit.css);
 @import url(../blocks/page-btn/_type/page-btn_type_add.css);
 /*Шапка сайта*/
@@ -27,9 +25,7 @@
 @import url(../blocks/cards/__image/cards__image.css);
 @import url(../blocks/cards/__heading/cards__heading.css);
 @import url(../blocks/cards/__like-btn/cards__like-btn.css);
-@import url(../blocks/cards/__like-btn-ico/__like-btn-ico.css);
-@import url(../blocks/cards/__like-btn-ico/_active/cards__like-btn-ico_active.css);
-
+@import url(../blocks/cards/__like-btn/_active/cards__like-btn_active.css);
 /*Подвал сайта*/
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
@@ -37,8 +33,8 @@
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
 @import url(../blocks/popup/__container/popup__container.css);
-@import url(../blocks/popup/__close-ico/popup__close-ico.css);
+@import url(../blocks/popup/__close-btn/popup__close-btn.css);
 @import url(../blocks/popup/__heading/popup__heading.css);
-@import url(../blocks/popup/__profile-edit/popup__profile-edit.css);
+@import url(../blocks/popup/__form-field/popup__form-field.css);
 @import url(../blocks/popup/__input/popup__input.css);
 @import url(../blocks/popup/__submit/popup__submit.css);

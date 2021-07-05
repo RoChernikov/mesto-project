@@ -5,6 +5,8 @@
   align-self: end;
   margin: 0 0 8px 19px;
   align-self: end;
+  background-image: url(../../../images/btn_edit_ico.svg);
+  background-size: 45%;
 }
 
 @media screen and (max-width: 618px) {
