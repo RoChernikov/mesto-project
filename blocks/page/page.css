@@ -8,4 +8,5 @@
   text-rendering: optimizeLegibility;
   color: #fff;
   background-color: #000;
+  min-width: 320px;
 }
