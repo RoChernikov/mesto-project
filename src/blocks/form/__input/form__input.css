@@ -1,0 +1,25 @@
+.form__input {
+  border: 0;
+  padding: 0 0 9px 0;
+  margin-top: 13px;
+  box-sizing: border-box;
+  height: 27px;
+  width: 358px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  transition: all .1s ease;
+}
+
+.form__input:focus {
+  outline-width: 0;
+}
+
+.form__input::placeholder {
+  color: #c4c4c4;
+}
+
+@media screen and (max-width: 618px) {
+  .form__input {
+    width: 238px;
+  }
+}

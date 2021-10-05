@@ -1,0 +1,8 @@
+.cards__like-btn_active {
+  background-image: url(../../../../images/like_btn_ico/like_btn_ico_active.svg);
+  transition: transform 0.1s linear;
+}
+
+.cards__like-btn_active:hover {
+  opacity: 50%;
+}

@@ -1,0 +1,12 @@
+.cards__trash-btn {
+  width: 18px;
+  height: 19.3px;
+  background-image: url(../../../images/trash_btn_ico.svg);
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  align-self: start;
+  justify-self: end;
+  margin: 18px 15px 0 0;
+  transition: opacity 0.1s linear;
+  z-index: 1;
+}

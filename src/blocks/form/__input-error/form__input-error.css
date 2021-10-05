@@ -1,0 +1,18 @@
+.form__input-error {
+  visibility: hidden;
+  opacity: 0;
+  align-self: flex-start;
+  font-weight: 400;
+  font-size: 12px;
+  margin-top: 5px;
+  color: #FF0000;
+  width: 358px;
+  min-height: 28px;
+  transition: all .1s ease;
+}
+
+@media screen and (max-width: 618px) {
+  .form__input-error {
+    width: 238px;
+  }
+}
