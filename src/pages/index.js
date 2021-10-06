@@ -4,11 +4,7 @@ import {
   generateInitialCards
 } from '../components/utils'
 import enableValidation from '../components/validate';
-import {
-  addCard,
-  setCardsLikeBtnsListeners,
-  setCardsTrashBtnsListeners
-} from '../components/card'
+import addCard from '../components/card'
 import {
   openPopup,
   closePopup
@@ -27,8 +23,8 @@ const validSettings = {
 
 //профиль
 const profile = document.querySelector('.profile');
-let profileName = profile.querySelector('.profile__name');
-let profileAbout = profile.querySelector('.profile__about');
+const profileName = profile.querySelector('.profile__name');
+const profileAbout = profile.querySelector('.profile__about');
 //Pop-Up редактирования профиля
 const popupEdit = document.querySelector('.popup-edit');
 const popupEditInputName = popupEdit.querySelector('.form__input_type_name');
@@ -37,18 +33,20 @@ const popupEditForm = popupEdit.querySelector('.form');
 //Pop-Up добавления карточки
 const popupAdd = document.querySelector('.popup-add');
 const popupAddForm = popupAdd.querySelector('.form');
-
-
+const popupAddInputImgTitle = popupAdd.querySelector(
+  '.form__input_type_img-title'
+);
+const popupAddInputImgLink = popupAdd.querySelector(
+  '.form__input_type_img-link'
+);
+const popupList = document.querySelectorAll('.popup');
 
 // Функция накладывает слушатель событий на все Pop-up-ы (закрытие)
 function setPopupListener() {
-  const popupList = document.querySelectorAll('.popup');
   popupList.forEach(item => {
     item.addEventListener('click', evt => {
-      closePopup(evt.target);
-      if (evt.target.classList.contains('popup__close-btn')) {
+      if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn'))
         closePopup(evt.target.closest('.popup'));
-      }
     })
   })
 }
@@ -75,17 +73,12 @@ document
 
 //Функционал добавления карточки
 popupAddForm.addEventListener('submit', evt => {
-  const popupAddInputImgTitle = popupAdd.querySelector(
-    '.form__input_type_img-title'
-  );
-  const popupAddInputImgLink = popupAdd.querySelector(
-    '.form__input_type_img-link'
-  );
   const data = {
     name: popupAddInputImgTitle.value,
     link: popupAddInputImgLink.value,
   };
   popupAddForm.reset();
+  enableValidation(validSettings);
   addCard(data);
   closePopup(popupAdd);
 });
