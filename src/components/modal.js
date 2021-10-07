@@ -22,11 +22,11 @@ export const openImagePopup = (data) => {
 export const closePopup = (popup) => {
   popup.classList.remove('popup_opened');
   body.classList.remove('page_hold');
+  document.removeEventListener('keydown', closePopupEsc);
 }
 
 //---+++++Функция закрытие Pop-Up-ов по нажатию ESC+++++---
 function closePopupEsc(evt) {
   if (evt.key === 'Escape')
     closePopup(document.querySelector('.popup_opened'));
-  document.removeEventListener('keydown', closePopupEsc);
 }

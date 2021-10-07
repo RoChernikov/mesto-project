@@ -1,3 +1,8 @@
+import {
+  disableButton,
+  enableButton
+} from '../components/utils'
+
 const showInputError = (formElement, inputElement, errorMessage, validSettings) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validSettings.inputErrorClass);
@@ -28,11 +33,9 @@ const hasInvalidInput = (inputList) => {
 
 const toggleButtonState = (inputList, buttonElement, validSettings) => {
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(validSettings.inactiveButtonClass);
-    buttonElement.setAttribute('disabled', 'disabled');
+    disableButton(buttonElement, validSettings.inactiveButtonClass);
   } else {
-    buttonElement.classList.remove(validSettings.inactiveButtonClass);
-    buttonElement.removeAttribute('disabled', 'disabled');
+    enableButton(buttonElement, validSettings.inactiveButtonClass);
   }
 };
 
