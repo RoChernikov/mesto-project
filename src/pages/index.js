@@ -1,7 +1,8 @@
 import './index.css';
 import initialCards from '../components/initial-сards';
 import {
-  generateInitialCards
+  generateInitialCards,
+  disableButton
 } from '../components/utils'
 import enableValidation from '../components/validate';
 import addCard from '../components/card'
@@ -73,12 +74,13 @@ document
 
 //Функционал добавления карточки
 popupAddForm.addEventListener('submit', evt => {
+  const submitBtn = evt.target.querySelector('.form__submit')
   const data = {
     name: popupAddInputImgTitle.value,
     link: popupAddInputImgLink.value,
   };
   popupAddForm.reset();
-  enableValidation(validSettings);
+  disableButton(submitBtn, validSettings.inactiveButtonClass)
   addCard(data);
   closePopup(popupAdd);
 });
