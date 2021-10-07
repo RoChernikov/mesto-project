@@ -92,8 +92,4 @@ renderProfileForm();
 
 generateInitialCards(initialCards);
 
-setCardsLikeBtnsListeners();
-
-setCardsTrashBtnsListeners();
-
 enableValidation(validSettings);
