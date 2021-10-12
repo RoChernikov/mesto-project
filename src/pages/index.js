@@ -1,16 +1,22 @@
+// ------------------------------------------------styles
 import './index.css';
+// -------------------------------------------------utils
 import {
   generateCards,
   disableButton,
-  handleLoaderState,
+  handleImageLoaderState,
+  setBtnLabel
 } from '../components/utils'
+// ----------------------------------------------validate
 import enableValidation from '../components/validate';
+// --------------------------------------------------card
 import addCard from '../components/card'
+// -------------------------------------------------modal
 import {
   openPopup,
   closePopup,
 } from '../components/modal'
-
+// ---------------------------------------------------API
 import {
   api,
   getUserInfo,
@@ -19,7 +25,8 @@ import {
   setAvatar,
   postCard
 } from '../components/API'
-
+// ------------------------------------------------------
+// Параметры валидации
 const validSettings = {
   formSelector: '.form',
   inputSelector: '.form__input',
@@ -42,22 +49,25 @@ const popupEdit = document.querySelector('.popup-edit');
 const popupEditInputName = popupEdit.querySelector('.form__input_type_name');
 const popupEditInputAbout = popupEdit.querySelector('.form__input_type_about');
 const popupEditForm = popupEdit.querySelector('.form');
+const popupEditBtn = popupEdit.querySelector('.form__submit');
 //Pop-Up редактирования аватара
-const popupAvatar = document.querySelector('.popup-avatar')
-const popupAvatarForm = popupAvatar.querySelector('.form')
-const popupAvatarInput = document.querySelector('.form__input_type_avatar-link')
+const popupAvatar = document.querySelector('.popup-avatar');
+const popupAvatarForm = popupAvatar.querySelector('.form');
+const popupAvatarInput = document.querySelector('.form__input_type_avatar-link');
+const popupAvatarBtn = popupAvatar.querySelector('.form__submit');
 //Pop-Up подтверждения
-const popupConfirm = document.querySelector('.popup-confirm')
+const popupConfirm = document.querySelector('.popup-confirm');
 //Pop-Up добавления карточки
 const popupAdd = document.querySelector('.popup-add');
 const popupAddForm = popupAdd.querySelector('.form');
+const popupAddBtn = popupAdd.querySelector('.form__submit');
 const popupAddInputImgTitle = popupAdd.querySelector(
   '.form__input_type_img-title'
 );
 const popupAddInputImgLink = popupAdd.querySelector(
   '.form__input_type_img-link'
 );
-const popupList = document.querySelectorAll('.popup');
+const popupList = Array.from(document.querySelectorAll('.popup'));
 
 
 // ******************************************************************************************************************
@@ -118,6 +128,7 @@ function setPopupListener() {
 }
 setPopupListener();
 
+//Наполняет форму попапа редактирования профиля
 const renderProfileForm = () => {
   popupEditInputName.value = profileName.textContent;
   popupEditInputAbout.value = profileAbout.textContent;
@@ -129,53 +140,98 @@ document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
   openPopup(popupEdit);
 });
 
+//Кнопка редактирования аватара
+document
+  .querySelector('.profile__avatar-container')
+  .addEventListener('click', () => openPopup(popupAvatar));
+
+//Кнопка "добавить карточку"
+document
+  .querySelector('.page-btn_type_add')
+  .addEventListener('click', () => openPopup(popupAdd));
+
+// function setBtnLabel(btnName, isLoading) { // <--------------------------КУДА ЕЕ?*************************
+//   if (isLoading) {
+//     btnName.value = 'Сохранение...'
+//   } else {
+//     if (btnName.classList.contains('form__submit_type_add')) {
+//       btnName.value = 'Создать';
+//     } else {
+//       btnName.value = 'Сохранить';
+//     }
+//   }
+// }
+
 //Функцианал редактирования профиля
 popupEditForm.addEventListener('submit', () => {
   const profile = {
     name: `${popupEditInputName.value}`,
     about: `${popupEditInputAbout.value}`
   }
-  setUserInfo(profile);
-  profileName.textContent = profile.name;
-  profileAbout.textContent = profile.about;
-  closePopup(popupEdit);
+  setBtnLabel(popupEditBtn, true);
+  setUserInfo(profile)
+    .then(() => loadProfile())
+    .catch() // <-------------------------------------------------------ДОПИСАТЬ*************************
+    .finally(() => {
+      closePopup(popupEdit);
+      setBtnLabel(popupEditBtn, false);
+    })
 });
-
-//Кнопка редактирования аватара
-document
-  .querySelector('.profile__avatar-container')
-  .addEventListener('click', () => openPopup(popupAvatar));
 
 // Функцианал редактирования аватара
-popupAvatar.addEventListener('submit', (evt) => {
-  const submitBtn = evt.target.querySelector('.form__submit')
+popupAvatar.addEventListener('submit', () => {
   const link = popupAvatarInput.value;
-  handleLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
-  profileAvatar.src = link;
-  setAvatar(link);
-  popupAvatarForm.reset();
-  disableButton(submitBtn, validSettings.inactiveButtonClass)
-  closePopup(popupAvatar);
+  setBtnLabel(popupAvatarBtn, true);
+  handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
+  setAvatar(link)
+    .then(() => {
+      loadAvatar();
+    })
+    .catch() // <-------------------------------------------------------ДОПИСАТЬ*************************
+    .finally(() => {
+      disableButton(popupAvatarBtn, validSettings.inactiveButtonClass);
+      setBtnLabel(popupAvatarBtn, false);
+      closePopup(popupAvatar);
+      popupAvatarForm.reset();
+    });
 });
 
-//Кнопка "добавить"
-document
-  .querySelector('.page-btn_type_add')
-  .addEventListener('click', () => openPopup(popupAdd));
-
 //Функционал добавления карточки
-popupAddForm.addEventListener('submit', evt => {
-  const submitBtn = evt.target.querySelector('.form__submit')
+popupAddForm.addEventListener('submit', () => {
   const data = {
     name: popupAddInputImgTitle.value,
     link: popupAddInputImgLink.value,
   };
-  popupAddForm.reset();
-  disableButton(submitBtn, validSettings.inactiveButtonClass)
-  postCard(data).then(res => addCard(res));
-  closePopup(popupAdd);
+  setBtnLabel(popupAddBtn, true);
+  postCard(data).then(res => {
+      addCard(res);
+    })
+    .catch() // <-------------------------------------------------------ДОПИСАТЬ*************************
+    .finally(() => {
+      disableButton(popupAddBtn, validSettings.inactiveButtonClass);
+      setBtnLabel(popupAddBtn, false);
+      closePopup(popupAdd);
+      popupAddForm.reset();
+    })
 });
 
 enableValidation(validSettings);
 
-handleLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
+handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
+
+
+
+// ******************************************ЭТА ФУНКЦИЯ УБИРАЕТ БАГ!******************************************
+// **________________________________________________________________________________________________________**
+// **       При загрузке страницы на мгновение видны скрытые модальные окна. Баг возникает рандомно.         **
+// **    Так происходит из-за того, что окна скрыты с помощью комбинации CSS свойств visability              **
+// **    и opacity вместо свойства display для реализации анимации при открытии/закрытии, так как            **
+// **    свойство display не анимируется. Изменение этого свойства добавлением класса ломает анимацию.       **
+// **       Для решения этой проблемы, всем модальным окнам изначально применено свойство display: none;,    **
+// **    данная функция ассинхронно меняет это свойство, что позволяет избежать бага.                        **
+// **       Лучше способа не придумал, баг не критиный, но мне не нравится. Если есть идеи,                  **
+// **    как решить это лучше - поделитесь, буду признателен!                                                **
+// **________________________________________________________________________________________________________**
+const makePopupsVisible = (popupList) => popupList.forEach(popup => popup.style.display = 'flex');
+setTimeout(() => makePopupsVisible(popupList), 100);
+// ************************************************************************************************************

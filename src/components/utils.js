@@ -1,9 +1,21 @@
-//---+++++Заполняем страницу дефолтными карточками+++++---
+//---+++++Заполняет страницу дефолтными карточками+++++---
 import addCard from '../components/card'
 export const generateCards = (cardsArray) => {
   cardsArray.reverse().forEach(data => {
     addCard(data);
   });
+}
+//---+++++Меняет надпись на кнопках форм+++++---
+export const setBtnLabel = (btnName, isLoading) => {
+  if (isLoading) {
+    btnName.value = 'Сохранение...'
+  } else {
+    if (btnName.classList.contains('form__submit_type_add')) {
+      btnName.value = 'Создать';
+    } else {
+      btnName.value = 'Сохранить';
+    }
+  }
 }
 //---+++++Деактивирует submit формы+++++---
 export const disableButton = (buttonElement, inactiveButtonClass) => {
@@ -16,7 +28,7 @@ export const enableButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.removeAttribute('disabled', 'disabled');
 }
 
-//---+++++Лоадеры изображений+++++---
+//---+++++Лоадер изображений+++++---
 export function loadImage(image, loaderName) {
   return new Promise((resolve, reject) => {
     loaderName.classList.add('spinner_visible');
@@ -25,7 +37,7 @@ export function loadImage(image, loaderName) {
   })
 }
 
-export function handleLoaderState(image, loaderName, errorClass) {
+export function handleImageLoaderState(image, loaderName, errorClass) {
   loadImage(image, loaderName, errorClass)
     .then(() => {
       loaderName.classList.remove('spinner_visible')
