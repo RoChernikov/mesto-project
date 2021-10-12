@@ -1,0 +1,7 @@
+.cards__like-counter_active {
+  visibility: visible;
+  opacity: 100%;
+  line-height: 0.8;
+  transition: all .13s ease;
+  position: inherit;
+}
