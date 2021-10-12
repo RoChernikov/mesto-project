@@ -7,7 +7,7 @@ import {
 } from './API'
 
 import {
-  handleLoaderState,
+  handleImageLoaderState,
 } from '../components/utils'
 
 import {
@@ -26,12 +26,13 @@ const removeCard = (evt) => {
   item.remove();
   deleteCard(item.id);
 }
-//<---------------ЗАХАРДКОРЕНО, ИСПРАВИТЬ----------------------
+
 const showTrashBtn = (owner, trashBtn) => {
   if (owner._id === currentUserId) {
     trashBtn.classList.add('cards__trash-btn_visible');
   }
 }
+
 const createCard = (data) => {
   const cardTemplate = document.querySelector('#card-template').content;
   const card = cardTemplate.querySelector('.cards__item').cloneNode(true);
@@ -48,7 +49,7 @@ const createCard = (data) => {
   trashBtn.addEventListener('click', removeCard);
   cardImage.addEventListener('click', () => openImagePopup(data));
   showTrashBtn(data.owner, trashBtn);
-  handleLoaderState(cardImage, spinner, 'cards__image_error')
+  handleImageLoaderState(cardImage, spinner, 'cards__image_error')
   return card;
 }
 
