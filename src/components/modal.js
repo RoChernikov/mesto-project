@@ -1,6 +1,8 @@
 //---+++++Открытие Pop-Up-ов+++++---
 const body = document.querySelector('.page');
 export const openPopup = (popup) => {
+  const popupContainer = popup.querySelector('.popup__container')
+  popupContainer.classList.add('popup__container_opened')
   popup.classList.add('popup_opened');
   body.classList.add('page_hold');
   document.addEventListener('keydown', closePopupEsc);
@@ -20,6 +22,8 @@ export const openImagePopup = (data) => {
 
 //---+++++Закрытие Pop-Up-ов+++++---
 export const closePopup = (popup) => {
+  const popupContainer = popup.querySelector('.popup__container')
+  popupContainer.classList.remove('popup__container_opened')
   popup.classList.remove('popup_opened');
   body.classList.remove('page_hold');
   document.removeEventListener('keydown', closePopupEsc);

@@ -1,7 +1,7 @@
 .page-btn {
   box-sizing: border-box;
   background: none;
-  border: none; 
+  border: none;
   font-size: 18px;
   padding: 0;
   background-repeat: no-repeat;
@@ -12,4 +12,8 @@
 
 .page-btn:hover {
   opacity: 60%;
+}
+
+.page-btn:active {
+  transform: scale(.95);
 }

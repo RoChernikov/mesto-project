@@ -1,15 +1,24 @@
 import './index.css';
-import initialCards from '../components/initial-сards';
 import {
-  generateInitialCards,
-  disableButton
+  generateCards,
+  disableButton,
+  handleLoaderState,
 } from '../components/utils'
 import enableValidation from '../components/validate';
 import addCard from '../components/card'
 import {
   openPopup,
-  closePopup
+  closePopup,
 } from '../components/modal'
+
+import {
+  api,
+  getUserInfo,
+  getCards,
+  setUserInfo,
+  setAvatar,
+  postCard
+} from '../components/API'
 
 const validSettings = {
   formSelector: '.form',
@@ -21,16 +30,24 @@ const validSettings = {
 }
 
 //---+++++Глобальные переменные+++++---
-
 //профиль
+export let currentUserId = null;
 const profile = document.querySelector('.profile');
 const profileName = profile.querySelector('.profile__name');
 const profileAbout = profile.querySelector('.profile__about');
+const profileAvatar = profile.querySelector('.profile__avatar');
+const avatarSpinner = profile.querySelector('.profile__spinner');
 //Pop-Up редактирования профиля
 const popupEdit = document.querySelector('.popup-edit');
 const popupEditInputName = popupEdit.querySelector('.form__input_type_name');
 const popupEditInputAbout = popupEdit.querySelector('.form__input_type_about');
 const popupEditForm = popupEdit.querySelector('.form');
+//Pop-Up редактирования аватара
+const popupAvatar = document.querySelector('.popup-avatar')
+const popupAvatarForm = popupAvatar.querySelector('.form')
+const popupAvatarInput = document.querySelector('.form__input_type_avatar-link')
+//Pop-Up подтверждения
+const popupConfirm = document.querySelector('.popup-confirm')
 //Pop-Up добавления карточки
 const popupAdd = document.querySelector('.popup-add');
 const popupAddForm = popupAdd.querySelector('.form');
@@ -41,6 +58,54 @@ const popupAddInputImgLink = popupAdd.querySelector(
   '.form__input_type_img-link'
 );
 const popupList = document.querySelectorAll('.popup');
+
+
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+
+const loadProfile = () => {
+  getUserInfo().then(data => {
+    currentUserId = data._id;
+    profileName.textContent = data.name;
+    profileAbout.textContent = data.about;
+  })
+}
+
+const loadAvatar = () => {
+  getUserInfo()
+    .then(data => {
+      profileAvatar.setAttribute('src', `${data.avatar}`);
+    })
+
+}
+
+const loadCards = () => {
+  getUserInfo().then(data => {
+    getCards().then(data => generateCards(data))
+  })
+}
+
+function loadData() {
+  loadProfile();
+  loadAvatar();
+  loadCards();
+}
+
+loadData();
+
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+// ******************************************************************************************************************
+
+
+
 
 // Функция накладывает слушатель событий на все Pop-up-ы (закрытие)
 function setPopupListener() {
@@ -53,18 +118,44 @@ function setPopupListener() {
 }
 setPopupListener();
 
-//Кнопка "редактировать"
-document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
-  openPopup(popupEdit);
+const renderProfileForm = () => {
   popupEditInputName.value = profileName.textContent;
   popupEditInputAbout.value = profileAbout.textContent;
+}
+
+//Кнопка "редактировать"
+document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
+  renderProfileForm();
+  openPopup(popupEdit);
 });
 
 //Функцианал редактирования профиля
-popupEditForm.addEventListener('submit', evt => {
-  profileName.textContent = popupEditInputName.value;
-  profileAbout.textContent = popupEditInputAbout.value;
+popupEditForm.addEventListener('submit', () => {
+  const profile = {
+    name: `${popupEditInputName.value}`,
+    about: `${popupEditInputAbout.value}`
+  }
+  setUserInfo(profile);
+  profileName.textContent = profile.name;
+  profileAbout.textContent = profile.about;
   closePopup(popupEdit);
+});
+
+//Кнопка редактирования аватара
+document
+  .querySelector('.profile__avatar-container')
+  .addEventListener('click', () => openPopup(popupAvatar));
+
+// Функцианал редактирования аватара
+popupAvatar.addEventListener('submit', (evt) => {
+  const submitBtn = evt.target.querySelector('.form__submit')
+  const link = popupAvatarInput.value;
+  handleLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
+  profileAvatar.src = link;
+  setAvatar(link);
+  popupAvatarForm.reset();
+  disableButton(submitBtn, validSettings.inactiveButtonClass)
+  closePopup(popupAvatar);
 });
 
 //Кнопка "добавить"
@@ -81,17 +172,10 @@ popupAddForm.addEventListener('submit', evt => {
   };
   popupAddForm.reset();
   disableButton(submitBtn, validSettings.inactiveButtonClass)
-  addCard(data);
+  postCard(data).then(res => addCard(res));
   closePopup(popupAdd);
 });
 
-const renderProfileForm = () => {
-  popupEditInputName.value = profileName.textContent;
-  popupEditInputAbout.value = profileAbout.textContent;
-}
-
-renderProfileForm();
-
-generateInitialCards(initialCards);
-
 enableValidation(validSettings);
+
+handleLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
