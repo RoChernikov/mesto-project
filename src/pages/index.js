@@ -1,5 +1,7 @@
 // ------------------------------------------------styles
 import './index.css';
+// ----------------------------------------------validate
+import enableValidation from '../components/validate';
 // -------------------------------------------------utils
 import {
   generateCards,
@@ -7,8 +9,6 @@ import {
   handleImageLoaderState,
   setBtnLabel
 } from '../components/utils'
-// ----------------------------------------------validate
-import enableValidation from '../components/validate';
 // --------------------------------------------------card
 import addCard from '../components/card'
 // -------------------------------------------------modal
@@ -18,12 +18,13 @@ import {
 } from '../components/modal'
 // ---------------------------------------------------API
 import {
-  api,
   getUserInfo,
   getCards,
   setUserInfo,
   setAvatar,
-  postCard
+  postCard,
+  likeCard,
+  dislikeCard
 } from '../components/API'
 // ------------------------------------------------------
 // Параметры валидации
@@ -78,11 +79,15 @@ const popupList = Array.from(document.querySelectorAll('.popup'));
 // ******************************************************************************************************************
 
 const loadProfile = () => {
-  getUserInfo().then(data => {
-    currentUserId = data._id;
-    profileName.textContent = data.name;
-    profileAbout.textContent = data.about;
-  })
+  getUserInfo()
+    .then(data => {
+      currentUserId = data._id;
+      profileName.textContent = data.name;
+      profileAbout.textContent = data.about;
+    })
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
 }
 
 const loadAvatar = () => {
@@ -90,13 +95,19 @@ const loadAvatar = () => {
     .then(data => {
       profileAvatar.setAttribute('src', `${data.avatar}`);
     })
-
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
 }
 
 const loadCards = () => {
-  getUserInfo().then(data => {
-    getCards().then(data => generateCards(data))
-  })
+  getUserInfo()
+    .then(data => {
+      getCards().then(data => generateCards(data))
+    })
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
 }
 
 function loadData() {
@@ -117,7 +128,7 @@ loadData();
 
 
 
-// Функция накладывает слушатель событий на все Pop-up-ы (закрытие)
+// Накладывает слушатель событий на все Pop-up-ы (закрытие)
 function setPopupListener() {
   popupList.forEach(item => {
     item.addEventListener('click', evt => {
@@ -150,18 +161,6 @@ document
   .querySelector('.page-btn_type_add')
   .addEventListener('click', () => openPopup(popupAdd));
 
-// function setBtnLabel(btnName, isLoading) { // <--------------------------КУДА ЕЕ?*************************
-//   if (isLoading) {
-//     btnName.value = 'Сохранение...'
-//   } else {
-//     if (btnName.classList.contains('form__submit_type_add')) {
-//       btnName.value = 'Создать';
-//     } else {
-//       btnName.value = 'Сохранить';
-//     }
-//   }
-// }
-
 //Функцианал редактирования профиля
 popupEditForm.addEventListener('submit', () => {
   const profile = {
@@ -171,7 +170,9 @@ popupEditForm.addEventListener('submit', () => {
   setBtnLabel(popupEditBtn, true);
   setUserInfo(profile)
     .then(() => loadProfile())
-    .catch() // <-------------------------------------------------------ДОПИСАТЬ*************************
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
     .finally(() => {
       closePopup(popupEdit);
       setBtnLabel(popupEditBtn, false);
@@ -187,7 +188,9 @@ popupAvatar.addEventListener('submit', () => {
     .then(() => {
       loadAvatar();
     })
-    .catch() // <-------------------------------------------------------ДОПИСАТЬ*************************
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
     .finally(() => {
       disableButton(popupAvatarBtn, validSettings.inactiveButtonClass);
       setBtnLabel(popupAvatarBtn, false);
@@ -206,7 +209,9 @@ popupAddForm.addEventListener('submit', () => {
   postCard(data).then(res => {
       addCard(res);
     })
-    .catch() // <-------------------------------------------------------ДОПИСАТЬ*************************
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
     .finally(() => {
       disableButton(popupAddBtn, validSettings.inactiveButtonClass);
       setBtnLabel(popupAddBtn, false);
