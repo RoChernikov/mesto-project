@@ -1,12 +1,12 @@
 .form__heading {
   font-size: 24px;
   font-weight: 900;
-  margin: 34px 0 36px;
+  margin: 34px 0 49px;
 }
 
 @media screen and (max-width: 618px) {
   .form__heading {
     font-size: 18px;
-    margin: 25px 0 64px;
+    margin: 25px 0 74px;
   }
 }

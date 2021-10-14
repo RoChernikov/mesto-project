@@ -1,0 +1,4 @@
+.cards__image_error {
+  background-image: url(../../../../images/default_image.jpeg);
+  background-size: cover;
+}

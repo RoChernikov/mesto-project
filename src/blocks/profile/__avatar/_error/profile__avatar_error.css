@@ -1,0 +1,4 @@
+.profile__avatar_error {
+  background-image: url(../../../../images/default_avatar.jpg);
+  background-size: cover;
+}

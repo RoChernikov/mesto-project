@@ -4,11 +4,17 @@
   background-image: url(../../../images/logo.svg);
   background-repeat: no-repeat;
   background-size: contain;
+  transition: all 0.08s ease;
+}
+
+@media screen and (max-width: 917px) {
+  .header__logo {
+    margin-left: 27px;
+  }
 }
 
 @media screen and (max-width: 618px) {
   .header__logo {
-    margin-left: 27px;
     height: 24.4px;
   }
 }

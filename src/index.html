@@ -10,7 +10,7 @@
 </head>
 
 <body class="page">
-  <!--+++++++Шапка сайта+++++++-->
+  <!--++++++Шапка сайта++++++-->
   <header class="header page__section page__section_place_header">
     <div class="header__logo"></div>
   </header>
@@ -18,12 +18,15 @@
   <main class="main">
     <!--+++++++Блок profile+++++++-->
     <section class="profile page__section page__section_place_profile">
-      <img src="./images/avatar.jpg" alt="Аватар" class="profile__avatar" />
+      <div class="profile__avatar-container">
+        <div class="spinner profile__spinner spinner_visible"><i></i></div>
+        <img alt="Аватар" class="profile__avatar" />
+      </div>
       <div class="profile__info">
-        <h1 class="profile__name page__text">Жак-Ив Кусто</h1>
+        <h1 class="profile__name page__text"></h1>
         <button name="btn-edit" type="button" class="page-btn page-btn_type_edit"
           aria-label="Редактировать профиль"></button>
-        <p class="profile__about page__text">Исследователь океана</p>
+        <p class="profile__about page__text"></p>
       </div>
       <button name="btn-add" type="button" class="page-btn page-btn_type_add" aria-label="Добавить фото"></button>
     </section>
@@ -34,7 +37,7 @@
   </main>
   <!--+++++++Подвал сайта+++++++-->
   <footer class="footer page__section page__section_place_footer">
-    <p class="footer__copyright page__text">&copy; 2021 Mesto Russia</p>
+    <p class="footer__copyright page__text">&copy; 2021 Ro Chernikov, Mesto Russia.</p>
   </footer>
   <!--+++++++Модальное окно редактирования профиля+++++++-->
   <div class="popup popup-edit">
@@ -68,7 +71,23 @@
           <input type="url" class="form__input form__input_type_img-link" id="form-input-img-link" name="link"
             placeholder="Ссылка на картинку" required />
           <span class="form__input-error form-input-img-link-error"></span>
-          <input type="submit" class="form__submit form__submit_disabled" value="Создать" />
+          <input type="submit" class="form__submit form__submit_type_add form__submit_disabled" value="Создать" />
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
+  <!--+++++++Модальное окно редактирования аватара+++++++-->
+  <div class="popup popup-avatar">
+    <div class="popup__container">
+      <button class="page-btn popup__close-btn" type="button" aria-label="Закрыть"></button>
+      <form class="form avatar-form" name="avatar-edit" action="#" novalidate>
+        <h2 class="form__heading page__text">Обновить аватар</h2>
+        <fieldset class="form__field">
+          <input type="url" class="form__input form__input_type_avatar-link" id="form-input-avatar-link"
+            name="avatar-link" placeholder="Ссылка на картинку" required />
+          <span class="form__input-error form-input-avatar-link-error"></span>
+          <input type="submit" class="form__submit form__submit_disabled" value="Сохранить" />
         </fieldset>
       </form>
     </div>
@@ -85,17 +104,31 @@
     </div>
   </div>
 
+  <!--+++++++Модальное окно подтверждения+++++++-->
+  <div class="popup popup-confirm">
+    <div class="popup__container">
+      <button class="page-btn popup__close-btn" type="button" aria-label="Закрыть"></button>
+      <form class="form confirm-form" name="confirm-form" action="#" novalidate>
+        <h2 class="form__heading form__heading_type_confirm page__text">Вы уверены?</h2>
+        <input type="submit" class="form__submit" value="Да" />
+        </fieldset>
+      </form>
+    </div>
+  </div>
+
   <!--+++++++Шаблон карточки+++++++-->
   <template id="card-template">
     <li class="cards__item">
+      <div class="spinner cards__spinner spinner_visible"><i></i></div>
       <img alt="" class="cards__image" />
       <button class="page-btn cards__trash-btn" type="button" aria-label="Удалить"></button>
       <h2 class="cards__heading page__text"></h2>
-      <button class="page-btn cards__like-btn" type="button" aria-label="Лайк"></button>
+      <div class="cards__like-container">
+        <button class="page-btn cards__like-btn" type="button" aria-label="Лайк"></button>
+        <span class="cards__like-counter">0</span>
+      </div>
     </li>
   </template>
-  <!-- <script src="./components/initial-сards.js"></script>
-  <script src="./pages/index.js"></script> -->
 </body>
 
 </html>
