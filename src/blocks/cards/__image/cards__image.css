@@ -7,4 +7,5 @@
   grid-row: 1 / 2;
   cursor: pointer;
   transition: all .2s ease-in-out;
+  color: transparent;
 }
