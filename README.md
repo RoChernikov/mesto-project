@@ -1,6 +1,6 @@
 ## Проектная работа: "Mesto". Создана в рамках учебы в [Яндекс.Практикум](https://praktikum.yandex.ru/) на курсе ["Веб-разработчик плюс"](https://practicum.yandex.ru/web-plus/).
 
-<h1 align="center"><a  href="" target="_blank"><img src="./readme_src/mesto_header.png" width="100%" alt="место фото"></a></h1>
+<h1 align="center"><a  href="http://rochernikov.github.io/mesto-project/" target="_blank"><img src="./readme_src/mesto_header.png" width="100%" alt="место фото"></a></h1>
 
 
 ## Краткое описание:
