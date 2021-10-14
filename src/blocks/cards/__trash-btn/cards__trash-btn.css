@@ -12,6 +12,6 @@
   z-index: 1;
 }
 
-.cards__trash-btn :focus {
+.cards__trash-btn:active {
   outline: none;
 }

@@ -11,5 +11,6 @@
 }
 
 .cards__like-btn:active {
+  outline: none;
   transform: scale(1);
 }
