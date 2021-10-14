@@ -1,7 +1,9 @@
 // ------------------------------------------------styles
 import './index.css';
+
 // ----------------------------------------------validate
 import enableValidation from '../components/validate';
+
 // -------------------------------------------------utils
 import {
   generateCards,
@@ -9,13 +11,16 @@ import {
   handleImageLoaderState,
   setBtnLabel
 } from '../components/utils'
+
 // --------------------------------------------------card
 import addCard from '../components/card'
+
 // -------------------------------------------------modal
 import {
   openPopup,
-  closePopup,
+  closePopup
 } from '../components/modal'
+
 // ---------------------------------------------------API
 import {
   getUserInfo,
@@ -23,10 +28,9 @@ import {
   setUserInfo,
   setAvatar,
   postCard,
-  likeCard,
-  dislikeCard
 } from '../components/API'
 // ------------------------------------------------------
+
 // Параметры валидации
 const validSettings = {
   formSelector: '.form',
@@ -57,7 +61,7 @@ const popupAvatarForm = popupAvatar.querySelector('.form');
 const popupAvatarInput = document.querySelector('.form__input_type_avatar-link');
 const popupAvatarBtn = popupAvatar.querySelector('.form__submit');
 //Pop-Up подтверждения
-const popupConfirm = document.querySelector('.popup-confirm');
+// const popupConfirm = document.querySelector('.popup-confirm');
 //Pop-Up добавления карточки
 const popupAdd = document.querySelector('.popup-add');
 const popupAddForm = popupAdd.querySelector('.form');
@@ -70,14 +74,7 @@ const popupAddInputImgLink = popupAdd.querySelector(
 );
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
-
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-
+//---+++++Загружает информацию о пользователе+++++---
 const loadProfile = () => {
   getUserInfo()
     .then(data => {
@@ -90,6 +87,7 @@ const loadProfile = () => {
     })
 }
 
+//---+++++Загружает аватар+++++---
 const loadAvatar = () => {
   getUserInfo()
     .then(data => {
@@ -100,6 +98,7 @@ const loadAvatar = () => {
     })
 }
 
+//---+++++Загружает карточки+++++---
 const loadCards = () => {
   getUserInfo()
     .then(data => {
@@ -110,23 +109,12 @@ const loadCards = () => {
     })
 }
 
+//---+++++Загружает все данные+++++---
 function loadData() {
   loadProfile();
   loadAvatar();
   loadCards();
 }
-
-loadData();
-
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-// ******************************************************************************************************************
-
-
-
 
 // Накладывает слушатель событий на все Pop-up-ы (закрытие)
 function setPopupListener() {
@@ -137,7 +125,6 @@ function setPopupListener() {
     })
   })
 }
-setPopupListener();
 
 //Наполняет форму попапа редактирования профиля
 const renderProfileForm = () => {
@@ -222,9 +209,11 @@ popupAddForm.addEventListener('submit', () => {
 
 enableValidation(validSettings);
 
+setPopupListener();
+
 handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
 
-
+loadData();
 
 // ******************************************ЭТА ФУНКЦИЯ УБИРАЕТ БАГ!******************************************
 // **________________________________________________________________________________________________________**

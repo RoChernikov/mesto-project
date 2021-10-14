@@ -11,3 +11,7 @@
   transition: opacity 0.1s linear;
   z-index: 1;
 }
+
+.cards__trash-btn :focus {
+  outline: none;
+}
