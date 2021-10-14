@@ -5,6 +5,7 @@ export const generateCards = (cardsArray) => {
     addCard(data);
   });
 }
+
 //---+++++Меняет надпись на кнопках форм+++++---
 export const setBtnLabel = (btnName, isLoading) => {
   if (isLoading) {
@@ -17,11 +18,13 @@ export const setBtnLabel = (btnName, isLoading) => {
     }
   }
 }
+
 //---+++++Деактивирует submit формы+++++---
 export const disableButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.add(inactiveButtonClass);
   buttonElement.setAttribute('disabled', 'disabled');
 }
+
 //---+++++Активирует submit формы+++++---
 export const enableButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.remove(inactiveButtonClass);

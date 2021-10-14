@@ -1,5 +1,6 @@
 import {
-  openImagePopup
+  openImagePopup,
+  openConfirmPopup
 } from '../components/modal'
 
 import {
@@ -16,50 +17,13 @@ import {
   currentUserId
 } from '../pages/index'
 
-//---+++++Сворачивает контейнер лайков+++++---
-const closeLikeContainer = (counter) => {
-  counter.classList.remove('cards__like-counter_active');
-}
-//---+++++Разворачивает контейнер лайков+++++---
-const openLikeContainer = (counter) => {
-  counter.classList.add('cards__like-counter_active');
-}
-//---+++++Увеличивает значение счетчика лайков+++++---
-const increaseLikeCounter = (id, btn, counter) => {
-  likeCard(id)
-    .then(() => {
-      btn.classList.add('cards__like-btn_active');
-    })
-  counter.textContent = +counter.textContent + 1;
-}
-//---+++++Уменьшает значение счетчика лайков+++++---
-const decreaseLikeCounter = (id, btn, counter) => {
-  dislikeCard(id)
-    .then(() => {
-      btn.classList.remove('cards__like-btn_active');
-    })
-  counter.textContent = +counter.textContent - 1;
-}
-//---+++++Переключает состояние кнопки лайка+++++---
-const toggleLikeBtnState = (id, btn, counter) => {
-  if (btn.classList.contains('cards__like-btn_active')) {
-    decreaseLikeCounter(id, btn, counter);
-  } else {
-    increaseLikeCounter(id, btn, counter);
-  }
-}
-//---+++++Удаляет карточку+++++---
-const removeCard = (evt) => {
-  const item = evt.target.closest('.cards__item');
-  item.remove();
-  deleteCard(item.id);
-}
 //---+++++Отображает кнопку удаления карточки+++++---
 const showTrashBtn = (owner, trashBtn) => {
   if (owner._id === currentUserId) {
     trashBtn.classList.add('cards__trash-btn_visible');
   }
 }
+
 //---+++++Задает состояние лайкам+++++---
 const initializeLikeState = (likesArr, btn, counter) => {
   if (likesArr.length > 0) {
@@ -69,6 +33,50 @@ const initializeLikeState = (likesArr, btn, counter) => {
     btn.classList.toggle('cards__like-btn_active');
   }
 }
+
+//---+++++Сворачивает контейнер лайков+++++---
+const closeLikeContainer = (counter) => {
+  counter.classList.remove('cards__like-counter_active');
+}
+
+//---+++++Разворачивает контейнер лайков+++++---
+const openLikeContainer = (counter) => {
+  counter.classList.add('cards__like-counter_active');
+}
+
+//---+++++Увеличивает значение счетчика лайков+++++---
+const increaseLikeCounter = (id, btn, counter) => {
+  likeCard(id)
+    .then(() => {
+      btn.classList.add('cards__like-btn_active');
+    })
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
+  counter.textContent = +counter.textContent + 1;
+}
+
+//---+++++Уменьшает значение счетчика лайков+++++---
+const decreaseLikeCounter = (id, btn, counter) => {
+  dislikeCard(id)
+    .then(() => {
+      btn.classList.remove('cards__like-btn_active');
+    })
+    .catch((err) => {
+      console.log(err); // выводим ошибку в консоль
+    })
+  counter.textContent = +counter.textContent - 1;
+}
+
+//---+++++Переключает состояние кнопки лайка+++++---
+const toggleLikeBtnState = (id, btn, counter) => {
+  if (btn.classList.contains('cards__like-btn_active')) {
+    decreaseLikeCounter(id, btn, counter);
+  } else {
+    increaseLikeCounter(id, btn, counter);
+  }
+}
+
 //---+++++Переключает состояние лайка и его счетчика+++++---
 const handleLike = (id, btn, counter) => {
   if (+counter.textContent === 0) {
@@ -78,6 +86,14 @@ const handleLike = (id, btn, counter) => {
   }
   toggleLikeBtnState(id, btn, counter);
 }
+
+//---+++++Удаляет карточку+++++---
+export const removeCard = (evt) => {
+  const item = evt.target.closest('.cards__item');
+  item.remove();
+  deleteCard(item.id);
+}
+
 //---+++++Создает карточку+++++---
 const createCard = (data) => {
   //--------------------------------------------------------------------------переменные
@@ -97,7 +113,7 @@ const createCard = (data) => {
   cardHeading.textContent = `${data.name}`;
   likeCounter.textContent = data.likes.length;
   //--------------------------------------------------------------------------слушатели
-  trashBtn.addEventListener('click', removeCard);
+  trashBtn.addEventListener('click', openConfirmPopup);
   cardImage.addEventListener('click', () => openImagePopup(data));
   likeBtn.addEventListener('click', () => handleLike(data._id, likeBtn, likeCounter));
   //----------------------------------------------------------------------------функции
