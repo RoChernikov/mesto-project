@@ -4,7 +4,8 @@
 ## Краткое описание:
 
 <p align="Left"> "Mesto" - это интерактивная страница, где пользователи могут публиковать фотографии и лайкать их.</p>
-[Ссылка на GitHub Pages](http://rochernikov.github.io/mesto-project/)
+
+[Открыть в браузере](http://rochernikov.github.io/mesto-project/)
 
 ### Функционал:
 
