@@ -1,35 +1,31 @@
 //---+++++Заполняет страницу дефолтными карточками+++++---
-import addCard from '../components/card'
-export const generateCards = (cardsArray) => {
+import { addCard } from '../components/card';
+export const generateCards = cardsArray => {
   cardsArray.reverse().forEach(data => {
     addCard(data);
   });
-}
+};
 
 //---+++++Меняет надпись на кнопках форм+++++---
-export const setBtnLabel = (btnName, isLoading) => {
+export const setBtnLabel = (btnName, isLoading, defaultText) => {
   if (isLoading) {
-    btnName.value = 'Сохранение...'
+    btnName.value = 'Сохранение...';
   } else {
-    if (btnName.classList.contains('form__submit_type_add')) {
-      btnName.value = 'Создать';
-    } else {
-      btnName.value = 'Сохранить';
-    }
+    btnName.value = defaultText;
   }
-}
+};
 
 //---+++++Деактивирует submit формы+++++---
 export const disableButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.add(inactiveButtonClass);
   buttonElement.setAttribute('disabled', 'disabled');
-}
+};
 
 //---+++++Активирует submit формы+++++---
 export const enableButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.remove(inactiveButtonClass);
   buttonElement.removeAttribute('disabled', 'disabled');
-}
+};
 
 //---+++++Лоадер изображений+++++---
 export function loadImage(image, loaderName) {
@@ -37,16 +33,16 @@ export function loadImage(image, loaderName) {
     loaderName.classList.add('spinner_visible');
     image.onerror = reject;
     image.onload = resolve;
-  })
+  });
 }
 
 export function handleImageLoaderState(image, loaderName, errorClass) {
   loadImage(image, loaderName, errorClass)
     .then(() => {
-      loaderName.classList.remove('spinner_visible')
+      loaderName.classList.remove('spinner_visible');
     })
     .catch(() => {
-      loaderName.classList.remove('spinner_visible')
-      image.classList.add(errorClass)
+      loaderName.classList.remove('spinner_visible');
+      image.classList.add(errorClass);
     });
 }

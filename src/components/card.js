@@ -1,72 +1,74 @@
 import {
+  openConfirmPopup,
   openImagePopup,
-  openConfirmPopup
-} from '../components/modal'
+  popupConfirm,
+  closePopup,
+  checkTargetAndRemoveDeleteMark
+} from '../components/modal';
 
-import {
-  deleteCard,
-  likeCard,
-  dislikeCard
-} from './API'
+import { deleteCard, likeCard, dislikeCard } from './API';
 
-import {
-  handleImageLoaderState,
-} from '../components/utils'
+import { handleImageLoaderState } from '../components/utils';
 
-import {
-  currentUserId
-} from '../pages/index'
+import { currentUserId } from '../pages/index';
+
+const cardsList = document.querySelector('.cards__list');
 
 //---+++++Отображает кнопку удаления карточки+++++---
 const showTrashBtn = (owner, trashBtn) => {
   if (owner._id === currentUserId) {
     trashBtn.classList.add('cards__trash-btn_visible');
   }
-}
+};
 
 //---+++++Задает состояние лайкам+++++---
 const initializeLikeState = (likesArr, btn, counter) => {
   if (likesArr.length > 0) {
-    counter.classList.add('cards__like-counter_active')
+    counter.classList.add('cards__like-counter_active');
   }
   if (likesArr.some(item => item._id === currentUserId)) {
     btn.classList.toggle('cards__like-btn_active');
   }
-}
+};
 
 //---+++++Сворачивает контейнер лайков+++++---
-const closeLikeContainer = (counter) => {
+const closeLikeContainer = counter => {
   counter.classList.remove('cards__like-counter_active');
-}
+};
 
 //---+++++Разворачивает контейнер лайков+++++---
-const openLikeContainer = (counter) => {
-  counter.classList.add('cards__like-counter_active');
-}
+const openLikeContainer = counter => {
+  setTimeout(() => {
+    counter.classList.add('cards__like-counter_active');
+  }, 200);
+};
+
+const setLikeCounter = (counter, data) =>
+  (counter.textContent = data.likes.length);
 
 //---+++++Увеличивает значение счетчика лайков+++++---
 const increaseLikeCounter = (id, btn, counter) => {
   likeCard(id)
-    .then(() => {
+    .then(data => {
       btn.classList.add('cards__like-btn_active');
+      setLikeCounter(counter, data);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err); // выводим ошибку в консоль
-    })
-  counter.textContent = +counter.textContent + 1;
-}
+    });
+};
 
 //---+++++Уменьшает значение счетчика лайков+++++---
 const decreaseLikeCounter = (id, btn, counter) => {
   dislikeCard(id)
-    .then(() => {
+    .then(data => {
       btn.classList.remove('cards__like-btn_active');
+      setLikeCounter(counter, data);
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err); // выводим ошибку в консоль
-    })
-  counter.textContent = +counter.textContent - 1;
-}
+    });
+};
 
 //---+++++Переключает состояние кнопки лайка+++++---
 const toggleLikeBtnState = (id, btn, counter) => {
@@ -75,27 +77,62 @@ const toggleLikeBtnState = (id, btn, counter) => {
   } else {
     increaseLikeCounter(id, btn, counter);
   }
-}
+};
 
 //---+++++Переключает состояние лайка и его счетчика+++++---
 const handleLike = (id, btn, counter) => {
   if (+counter.textContent === 0) {
     openLikeContainer(counter);
-  } else if (+counter.textContent === 1 && btn.classList.contains('cards__like-btn_active')) {
+  } else if (
+    +counter.textContent === 1 &&
+    btn.classList.contains('cards__like-btn_active')
+  ) {
     closeLikeContainer(counter);
   }
   toggleLikeBtnState(id, btn, counter);
-}
+};
+//*******************************************************************************************************************
+//------------------------------------+++++ФУНКЦИОНАЛ ОКНА С ПОДТВЕРЖДЕНИЕМ+++++-------------------------------------
+//*******************************************************************************************************************
 
-//---+++++Удаляет карточку+++++---
-export const removeCard = (evt) => {
-  const item = evt.target.closest('.cards__item');
-  item.remove();
-  deleteCard(item.id);
-}
+//----------это было очень нетривиально, но интересно! Все придумал сам, до чего-то более элегантного не дадумался(
+//----------Да и дедлайн поджимает
+
+//---+++++Удаляет помеченную карточку (с сервера, а затем из разметки)+++++---
+export const deleteTargetCard = () => {
+  const target = document.querySelector('.delete-target');
+  const id = target.id;
+  popupConfirm.removeEventListener('submit', deleteTargetCard);
+  deleteCard(id)
+    .then(() => {
+      target.remove();
+      closePopup(popupConfirm);
+    })
+    .catch(err => {
+      console.log(err); // выводим ошибку в консоль
+    });
+};
+
+//---+++++Помечает карточку, которую нужно удалить+++++---
+const setDeleteMark = evt => {
+  const target = evt.target.closest('.cards__item');
+  target.classList.add('delete-target');
+};
+
+//---+++++Проверяет наличие помеченной карточки и удаляет пометку. Снимает слушатели+++++---
+export const removeDeleteMark = evt => {
+  const target = document.querySelector('.delete-target');
+  if (target) {
+    popupConfirm.removeEventListener('submit', deleteTargetCard);
+    popupConfirm.removeEventListener('click', checkTargetAndRemoveDeleteMark);
+    target.classList.remove('delete-target');
+  }
+};
+//*******************************************************************************************************************
+//*******************************************************************************************************************
 
 //---+++++Создает карточку+++++---
-const createCard = (data) => {
+const createCard = data => {
   //--------------------------------------------------------------------------переменные
   const cardTemplate = document.querySelector('#card-template').content;
   const card = cardTemplate.querySelector('.cards__item').cloneNode(true);
@@ -113,18 +150,22 @@ const createCard = (data) => {
   cardHeading.textContent = `${data.name}`;
   likeCounter.textContent = data.likes.length;
   //--------------------------------------------------------------------------слушатели
-  trashBtn.addEventListener('click', openConfirmPopup);
+  trashBtn.addEventListener('click', evt => {
+    setDeleteMark(evt);
+    openConfirmPopup(evt);
+  });
   cardImage.addEventListener('click', () => openImagePopup(data));
-  likeBtn.addEventListener('click', () => handleLike(data._id, likeBtn, likeCounter));
+  likeBtn.addEventListener('click', () =>
+    handleLike(data._id, likeBtn, likeCounter)
+  );
   //----------------------------------------------------------------------------функции
   showTrashBtn(data.owner, trashBtn);
   handleImageLoaderState(cardImage, spinner, 'cards__image_error');
   initializeLikeState(data.likes, likeBtn, likeCounter);
   return card;
-}
+};
 
 //---+++++Добавляет карточку в разметку+++++---
-export default function addCard(data) {
-  const cardsList = document.querySelector('.cards__list');
+export const addCard = data => {
   cardsList.prepend(createCard(data));
-}
+};
