@@ -132,11 +132,11 @@ popupEditForm.addEventListener('submit', () => {
     .then(data => {
       renderProfile(data.name, data.about);
       closePopup(popupEdit);
-      setBtnLabel(popupEditBtn, false, 'Сохранить');
     })
     .catch(err => {
       console.log(err); // выводим ошибку в консоль
-    });
+    })
+    .finally(() => setBtnLabel(popupEditBtn, false, 'Сохранить'));
 });
 
 // Функцианал редактирования аватара
@@ -148,13 +148,13 @@ popupAvatar.addEventListener('submit', () => {
     .then(data => {
       profileAvatar.setAttribute('src', data.avatar);
       disableButton(popupAvatarBtn, validSettings.inactiveButtonClass);
-      setBtnLabel(popupAvatarBtn, false, 'Сохранить');
       closePopup(popupAvatar);
       popupAvatarForm.reset();
     })
     .catch(err => {
       console.log(err); // выводим ошибку в консоль
-    });
+    })
+    .finally(() => setBtnLabel(popupAvatarBtn, false, 'Сохранить'));
 });
 
 //Функционал добавления карточки
@@ -168,13 +168,13 @@ popupAddForm.addEventListener('submit', () => {
     .then(res => {
       addCard(res);
       disableButton(popupAddBtn, validSettings.inactiveButtonClass);
-      setBtnLabel(popupAddBtn, false, 'Создать');
       closePopup(popupAdd);
       popupAddForm.reset();
     })
     .catch(err => {
       console.log(err); // выводим ошибку в консоль
-    });
+    })
+    .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
 });
 
 enableValidation(validSettings);
