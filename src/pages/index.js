@@ -10,16 +10,13 @@ import {
   disableButton,
   handleImageLoaderState,
   setBtnLabel
-} from '../components/utils'
+} from '../components/utils';
 
 // --------------------------------------------------card
-import addCard from '../components/card'
+import { addCard } from '../components/card';
 
 // -------------------------------------------------modal
-import {
-  openPopup,
-  closePopup
-} from '../components/modal'
+import { openPopup, closePopup } from '../components/modal';
 
 // ---------------------------------------------------API
 import {
@@ -27,8 +24,8 @@ import {
   getCards,
   setUserInfo,
   setAvatar,
-  postCard,
-} from '../components/API'
+  postCard
+} from '../components/API';
 // ------------------------------------------------------
 
 // Параметры валидации
@@ -39,7 +36,7 @@ const validSettings = {
   inactiveButtonClass: 'form__submit_disabled',
   inputErrorClass: 'form__input_invalid',
   errorClass: 'form__input-error_active'
-}
+};
 
 //---+++++Глобальные переменные+++++---
 //профиль
@@ -58,11 +55,10 @@ const popupEditBtn = popupEdit.querySelector('.form__submit');
 //Pop-Up редактирования аватара
 const popupAvatar = document.querySelector('.popup-avatar');
 const popupAvatarForm = popupAvatar.querySelector('.form');
-const popupAvatarInput = document.querySelector('.form__input_type_avatar-link');
+const popupAvatarInput = document.querySelector(
+  '.form__input_type_avatar-link'
+);
 const popupAvatarBtn = popupAvatar.querySelector('.form__submit');
-//Pop-Up подтверждения
-// const popupConfirm = document.querySelector('.popup-confirm');
-//Pop-Up добавления карточки
 const popupAdd = document.querySelector('.popup-add');
 const popupAddForm = popupAdd.querySelector('.form');
 const popupAddBtn = popupAdd.querySelector('.form__submit');
@@ -74,62 +70,39 @@ const popupAddInputImgLink = popupAdd.querySelector(
 );
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
-//---+++++Загружает информацию о пользователе+++++---
-const loadProfile = () => {
-  getUserInfo()
-    .then(data => {
-      currentUserId = data._id;
-      profileName.textContent = data.name;
-      profileAbout.textContent = data.about;
-    })
-    .catch((err) => {
-      console.log(err); // выводим ошибку в консоль
-    })
-}
+//Заполняет профиль
+const renderProfile = (name, about) => {
+  profileName.textContent = name;
+  profileAbout.textContent = about;
+};
 
-//---+++++Загружает аватар+++++---
-const loadAvatar = () => {
-  getUserInfo()
-    .then(data => {
-      profileAvatar.setAttribute('src', `${data.avatar}`);
-    })
-    .catch((err) => {
-      console.log(err); // выводим ошибку в консоль
-    })
-}
+//Заполняет форму попапа редактирования профиля
+const renderProfileForm = () => {
+  popupEditInputName.value = profileName.textContent;
+  popupEditInputAbout.value = profileAbout.textContent;
+};
 
-//---+++++Загружает карточки+++++---
-const loadCards = () => {
-  getUserInfo()
-    .then(data => {
-      getCards().then(data => generateCards(data))
-    })
-    .catch((err) => {
-      console.log(err); // выводим ошибку в консоль
-    })
-}
-
-//---+++++Загружает все данные+++++---
-function loadData() {
-  loadProfile();
-  loadAvatar();
-  loadCards();
-}
+//---+++++Загрузка данных+++++---
+const loadData = Promise.all([getUserInfo(), getCards()])
+  .then(data => {
+    currentUserId = data[0]._id;
+    renderProfile(data[0].name, data[0].about);
+    profileAvatar.setAttribute('src', `${data[0].avatar}`);
+    generateCards(data[1]);
+  })
+  .catch(err => console.log(err));
 
 // Накладывает слушатель событий на все Pop-up-ы (закрытие)
 function setPopupListener() {
   popupList.forEach(item => {
     item.addEventListener('click', evt => {
-      if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn'))
+      if (
+        evt.target.classList.contains('popup') ||
+        evt.target.classList.contains('popup__close-btn')
+      )
         closePopup(evt.target.closest('.popup'));
-    })
-  })
-}
-
-//Наполняет форму попапа редактирования профиля
-const renderProfileForm = () => {
-  popupEditInputName.value = profileName.textContent;
-  popupEditInputAbout.value = profileAbout.textContent;
+    });
+  });
 }
 
 //Кнопка "редактировать"
@@ -153,17 +126,17 @@ popupEditForm.addEventListener('submit', () => {
   const profile = {
     name: `${popupEditInputName.value}`,
     about: `${popupEditInputAbout.value}`
-  }
+  };
   setBtnLabel(popupEditBtn, true);
   setUserInfo(profile)
-    .then(() => loadProfile())
-    .catch((err) => {
-      console.log(err); // выводим ошибку в консоль
-    })
-    .finally(() => {
+    .then(data => {
+      renderProfile(data.name, data.about);
       closePopup(popupEdit);
-      setBtnLabel(popupEditBtn, false);
+      setBtnLabel(popupEditBtn, false, 'Сохранить');
     })
+    .catch(err => {
+      console.log(err); // выводим ошибку в консоль
+    });
 });
 
 // Функцианал редактирования аватара
@@ -172,17 +145,15 @@ popupAvatar.addEventListener('submit', () => {
   setBtnLabel(popupAvatarBtn, true);
   handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
   setAvatar(link)
-    .then(() => {
-      loadAvatar();
-    })
-    .catch((err) => {
-      console.log(err); // выводим ошибку в консоль
-    })
-    .finally(() => {
+    .then(data => {
+      profileAvatar.setAttribute('src', data.avatar);
       disableButton(popupAvatarBtn, validSettings.inactiveButtonClass);
-      setBtnLabel(popupAvatarBtn, false);
+      setBtnLabel(popupAvatarBtn, false, 'Сохранить');
       closePopup(popupAvatar);
       popupAvatarForm.reset();
+    })
+    .catch(err => {
+      console.log(err); // выводим ошибку в консоль
     });
 });
 
@@ -190,21 +161,20 @@ popupAvatar.addEventListener('submit', () => {
 popupAddForm.addEventListener('submit', () => {
   const data = {
     name: popupAddInputImgTitle.value,
-    link: popupAddInputImgLink.value,
+    link: popupAddInputImgLink.value
   };
   setBtnLabel(popupAddBtn, true);
-  postCard(data).then(res => {
+  postCard(data)
+    .then(res => {
       addCard(res);
-    })
-    .catch((err) => {
-      console.log(err); // выводим ошибку в консоль
-    })
-    .finally(() => {
       disableButton(popupAddBtn, validSettings.inactiveButtonClass);
-      setBtnLabel(popupAddBtn, false);
+      setBtnLabel(popupAddBtn, false, 'Создать');
       closePopup(popupAdd);
       popupAddForm.reset();
     })
+    .catch(err => {
+      console.log(err); // выводим ошибку в консоль
+    });
 });
 
 enableValidation(validSettings);
@@ -212,8 +182,6 @@ enableValidation(validSettings);
 setPopupListener();
 
 handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
-
-loadData();
 
 // ******************************************ЭТА ФУНКЦИЯ УБИРАЕТ БАГ!******************************************
 // **________________________________________________________________________________________________________**
@@ -226,6 +194,7 @@ loadData();
 // **       Лучше способа не придумал, баг не критиный, но мне не нравится. Если есть идеи,                  **
 // **    как решить это лучше - поделитесь, буду признателен!                                                **
 // **________________________________________________________________________________________________________**
-const makePopupsVisible = (popupList) => popupList.forEach(popup => popup.style.display = 'flex');
+const makePopupsVisible = popupList =>
+  popupList.forEach(popup => (popup.style.display = 'flex'));
 setTimeout(() => makePopupsVisible(popupList), 100);
 // ************************************************************************************************************

@@ -7,7 +7,7 @@
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
-  transition: opacity .08s linear, transform .05s linear;
+  transition: opacity 0.08s linear, transform 0.05s linear;
 }
 
 .page-btn:hover {
@@ -15,5 +15,5 @@
 }
 
 .page-btn:active {
-  transform: scale(.95);
+  transform: scale(0.95);
 }

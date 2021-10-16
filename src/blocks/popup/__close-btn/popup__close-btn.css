@@ -10,7 +10,7 @@
 }
 
 .popup__close-btn:active {
-  transform: rotate(45deg) scale(.9);
+  transform: rotate(45deg) scale(0.9);
 }
 
 @media screen and (max-width: 618px) {
