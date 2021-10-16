@@ -10,6 +10,7 @@
 }
 
 .popup__close-btn:active {
+  outline: none;
   transform: rotate(45deg) scale(0.9);
 }
 
