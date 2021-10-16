@@ -5,8 +5,8 @@
   height: 27px;
   width: 358px;
   font-size: 14px;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
-  transition: all .1s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  transition: all 0.1s ease;
 }
 
 .form__input:focus {

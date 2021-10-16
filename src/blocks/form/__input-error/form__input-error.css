@@ -5,10 +5,10 @@
   font-weight: 400;
   font-size: 12px;
   margin-top: 5px;
-  color: #FF0000;
+  color: #ff0000;
   width: 358px;
   min-height: 28px;
-  transition: all .1s ease;
+  transition: all 0.1s ease;
 }
 
 @media screen and (max-width: 618px) {
