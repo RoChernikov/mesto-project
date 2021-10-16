@@ -113,6 +113,10 @@
 
 `npm install --save-dev cross-env` - *пакет для использования глобальных переменных*
 
+## Будущая доработка проекта будет включать в себя:
+
+- Перенос проекта на ООП
+
 ## Ссылки:
 
 [Макет 1](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
