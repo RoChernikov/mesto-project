@@ -131,15 +131,16 @@ export const removeDeleteMark = evt => {
 //---+++++Создает карточку+++++---
 const createCard = data => {
   //--------------------------------------------------------------------------переменные
-  const cardTemplate = document.querySelector('#card-template').content;
-  const card = cardTemplate.querySelector('.cards__item').cloneNode(true);
+  const card = document
+    .querySelector('#card-template')
+    .content.querySelector('.cards__item')
+    .cloneNode(true);
   const cardImage = card.querySelector('.cards__image');
   const cardHeading = card.querySelector('.cards__heading');
   const likeBtn = card.querySelector('.cards__like-btn');
   const likeCounter = card.querySelector('.cards__like-counter');
   const trashBtn = card.querySelector('.cards__trash-btn');
   const spinner = card.querySelector('.cards__spinner');
-  const likes = data.likes;
   //-------------------------------------------------------------------------наполнение
   card.id = `${data._id}`;
   cardImage.src = `${data.link}`;
