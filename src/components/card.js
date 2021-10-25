@@ -6,11 +6,9 @@ import {
   checkTargetAndRemoveDeleteMark
 } from '../components/modal';
 
-import { deleteCard, likeCard, dislikeCard } from './API';
-
 import { handleImageLoaderState } from '../components/utils';
 
-import { currentUserId } from '../pages/index';
+import { api, currentUserId } from '../pages/index';
 
 const cardsList = document.querySelector('.cards__list');
 
@@ -48,7 +46,8 @@ const setLikeCounter = (counter, data) =>
 
 //---+++++Увеличивает значение счетчика лайков+++++---
 const increaseLikeCounter = (id, btn, counter) => {
-  likeCard(id)
+  api
+    .likeCard(id)
     .then(data => {
       btn.classList.add('cards__like-btn_active');
       setLikeCounter(counter, data);
@@ -60,7 +59,8 @@ const increaseLikeCounter = (id, btn, counter) => {
 
 //---+++++Уменьшает значение счетчика лайков+++++---
 const decreaseLikeCounter = (id, btn, counter) => {
-  dislikeCard(id)
+  api
+    .dislikeCard(id)
     .then(data => {
       btn.classList.remove('cards__like-btn_active');
       setLikeCounter(counter, data);
@@ -100,7 +100,8 @@ export const deleteTargetCard = () => {
   const target = document.querySelector('.delete-target');
   const id = target.id;
   popupConfirm.removeEventListener('submit', deleteTargetCard);
-  deleteCard(id)
+  api
+    .deleteCard(id)
     .then(() => {
       target.remove();
       closePopup(popupConfirm);
