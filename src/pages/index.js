@@ -18,15 +18,7 @@ import { addCard } from '../components/card';
 // -------------------------------------------------modal
 import { openPopup, closePopup } from '../components/modal';
 
-// ---------------------------------------------------API
-import {
-  getUserInfo,
-  getCards,
-  setUserInfo,
-  setAvatar,
-  postCard
-} from '../components/API';
-// ------------------------------------------------------
+import Api from '../components/API';
 
 // Параметры валидации
 const validSettings = {
@@ -39,6 +31,15 @@ const validSettings = {
 };
 
 //---+++++Глобальные переменные+++++---
+//параметры запросов
+const fetchParams = {
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-2/',
+  headers: {
+    'authorization': '97ccf1bd-d259-459d-8352-7ffe6d750b35',
+    'Content-Type': 'application/json'
+  }
+};
+export const api = new Api(fetchParams);
 //профиль
 export let currentUserId = null;
 const profile = document.querySelector('.profile');
@@ -83,7 +84,7 @@ const renderProfileForm = () => {
 };
 
 //---+++++Загрузка данных+++++---
-const loadData = Promise.all([getUserInfo(), getCards()])
+const loadData = Promise.all([api.getUserInfo(), api.getCards()])
   .then(data => {
     currentUserId = data[0]._id;
     renderProfile(data[0].name, data[0].about);
@@ -128,7 +129,8 @@ popupEditForm.addEventListener('submit', () => {
     about: `${popupEditInputAbout.value}`
   };
   setBtnLabel(popupEditBtn, true);
-  setUserInfo(profile)
+  api
+    .setUserInfo(profile)
     .then(data => {
       renderProfile(data.name, data.about);
       closePopup(popupEdit);
@@ -144,7 +146,8 @@ popupAvatar.addEventListener('submit', () => {
   const link = popupAvatarInput.value;
   setBtnLabel(popupAvatarBtn, true);
   handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
-  setAvatar(link)
+  api
+    .setAvatar(link)
     .then(data => {
       profileAvatar.setAttribute('src', data.avatar);
       disableButton(popupAvatarBtn, validSettings.inactiveButtonClass);
@@ -164,7 +167,8 @@ popupAddForm.addEventListener('submit', () => {
     link: popupAddInputImgLink.value
   };
   setBtnLabel(popupAddBtn, true);
-  postCard(data)
+  api
+    .postCard(data)
     .then(res => {
       addCard(res);
       disableButton(popupAddBtn, validSettings.inactiveButtonClass);
