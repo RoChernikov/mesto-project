@@ -4,6 +4,7 @@ import './index.css';
 // ----------------------------------------------validate
 import enableValidation from '../components/validate';
 
+import FormValidator from '../components/validate'; //класс
 // -------------------------------------------------utils
 import {
   generateCards,
@@ -181,7 +182,18 @@ popupAddForm.addEventListener('submit', () => {
     .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
 });
 
-enableValidation(validSettings);
+//enableValidation(validSettings);
+//включение валидации для формы редактирования профиля
+const popupEditProfileValidator = new FormValidator(validSettings, popupEdit);
+popupEditProfileValidator.enableValidation();
+
+//включение валидации для формы добавления карточки
+const popupAddCardValidator = new FormValidator(validSettings, popupAdd);
+popupAddCardValidator.enableValidation();
+
+//включение валидации для формы редактирования аватара
+const popupEditAvatarValidator = new FormValidator(validSettings, popupAvatar);
+popupEditAvatarValidator.enableValidation();
 
 setPopupListener();
 
