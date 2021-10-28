@@ -15,7 +15,11 @@ module.exports = {
     filename: 'main.js',
   },
   devServer: {
-    open: true,
+    open: {
+      app: {
+        name: 'Google Chrome',
+      },
+    },
     compress: true,
     port: 8080
   },
