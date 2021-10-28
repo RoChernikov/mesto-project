@@ -8,12 +8,13 @@ import enableValidation from '../components/validate';
 import {
   generateCards,
   disableButton,
-  handleImageLoaderState,
+  // handleImageLoaderState,
   setBtnLabel
 } from '../components/utils';
 
 // --------------------------------------------------card
-import { addCard } from '../components/card';
+// import { addCard } from '../components/Card';
+import Card from '../components/Card';
 
 // -------------------------------------------------modal
 import { openPopup, closePopup } from '../components/modal';
@@ -145,7 +146,7 @@ popupEditForm.addEventListener('submit', () => {
 popupAvatar.addEventListener('submit', () => {
   const link = popupAvatarInput.value;
   setBtnLabel(popupAvatarBtn, true);
-  handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
+  // handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
   api
     .setAvatar(link)
     .then(data => {
@@ -185,7 +186,7 @@ enableValidation(validSettings);
 
 setPopupListener();
 
-handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
+// handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
 
 // ******************************************ЭТА ФУНКЦИЯ УБИРАЕТ БАГ!******************************************
 // **________________________________________________________________________________________________________**
@@ -202,3 +203,14 @@ const makePopupsVisible = popupList =>
   popupList.forEach(popup => (popup.style.display = 'flex'));
 setTimeout(() => makePopupsVisible(popupList), 100);
 // ************************************************************************************************************
+
+const cardsList = document.querySelector('.cards__list');
+const testUserId = 'b83992c0161886588f5668dc';
+const testSelector = '#card-template';
+
+api.getCards().then(data =>
+  data.reverse().forEach(item => {
+    const card = new Card(item, testUserId, testSelector);
+    cardsList.prepend(card.generateCard());
+  })
+);

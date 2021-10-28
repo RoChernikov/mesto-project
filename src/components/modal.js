@@ -1,4 +1,4 @@
-import { removeDeleteMark, deleteTargetCard } from './card';
+// import { removeDeleteMark, deleteTargetCard } from './Card';
 
 export const popupConfirm = document.querySelector('.popup-confirm');
 const body = document.querySelector('.page');
