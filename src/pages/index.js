@@ -12,6 +12,9 @@ import {
   setBtnLabel
 } from '../components/utils';
 
+// -------------------------------------------------utils
+import Section from '../components/Section';
+
 // --------------------------------------------------card
 import Card from '../components/Card';
 
@@ -91,17 +94,37 @@ const renderProfileForm = () => {
   popupEditInputAbout.value = profileAbout.textContent;
 };
 
+const createNewCard = data => {
+  const card = new Card(data, currentUserId, '#card-template');
+  return card;
+};
+
+const cards = new Section(
+  {
+    renderer: data => {
+      const card = createNewCard(data);
+      const cardElement = card.generateCard();
+      card.setLikeCounter(data);
+      cards.addItem(cardElement, 'append');
+    }
+  },
+  '.cards__list'
+);
+
 //---+++++Загрузка данных+++++---
-const loadData = Promise.all([api.getUserInfo(), api.getCards()])
+api
+  .loadData()
   .then(data => {
-    currentUserId = data[0]._id;
-    renderProfile(data[0].name, data[0].about);
-    profileAvatar.setAttribute('src', `${data[0].avatar}`);
-    generateCards(data[1]);
+    const [userData, cardsData] = data;
+    currentUserId = userData._id;
+    renderProfile(userData.name, userData.about);
+    profileAvatar.setAttribute('src', `${userData.avatar}`);
+    cards.renderItems(cardsData);
   })
   .catch(err => console.log(err));
 
 // Накладывает слушатель событий на все Pop-up-ы (закрытие)
+
 function setPopupListener() {
   popupList.forEach(item => {
     item.addEventListener('click', evt => {
@@ -208,14 +231,3 @@ const makePopupsVisible = popupList =>
   popupList.forEach(popup => (popup.style.display = 'flex'));
 setTimeout(() => makePopupsVisible(popupList), 100);
 // ************************************************************************************************************
-
-const cardsList = document.querySelector('.cards__list');
-const testUserId = 'b83992c0161886588f5668dc';
-const testSelector = '#card-template';
-
-api.getCards().then(data =>
-  data.reverse().forEach(item => {
-    const card = new Card(item, testUserId, testSelector);
-    cardsList.prepend(card.generateCard());
-  })
-);

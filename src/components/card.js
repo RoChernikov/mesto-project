@@ -59,8 +59,8 @@ export default class Card {
     }, 200);
   }
 
-  setLikeCounter() {
-    this._likeCounter.textContent = this._likes.length;
+  setLikeCounter(data) {
+    this._likeCounter.textContent = data.likes.length;
   }
 
   //---+++++Увеличивает значение счетчика лайков+++++---
