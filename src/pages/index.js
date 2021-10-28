@@ -2,9 +2,8 @@
 import './index.css';
 
 // ----------------------------------------------validate
-import enableValidation from '../components/validate';
+import FormValidator from '../components/FormValidator';
 
-import FormValidator from '../components/validate'; //класс
 // -------------------------------------------------utils
 import {
   generateCards,
@@ -14,23 +13,12 @@ import {
 } from '../components/utils';
 
 // --------------------------------------------------card
-// import { addCard } from '../components/Card';
 import Card from '../components/Card';
 
 // -------------------------------------------------modal
 import { openPopup, closePopup } from '../components/modal';
 
 import Api from '../components/API';
-
-// Параметры валидации
-const validSettings = {
-  formSelector: '.form',
-  inputSelector: '.form__input',
-  submitButtonSelector: '.form__submit',
-  inactiveButtonClass: 'form__submit_disabled',
-  inputErrorClass: 'form__input_invalid',
-  errorClass: 'form__input-error_active'
-};
 
 //---+++++Глобальные переменные+++++---
 //параметры запросов
@@ -72,6 +60,24 @@ const popupAddInputImgLink = popupAdd.querySelector(
   '.form__input_type_img-link'
 );
 const popupList = Array.from(document.querySelectorAll('.popup'));
+
+// Параметры валидации
+const validSettings = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit',
+  inactiveButtonClass: 'form__submit_disabled',
+  inputErrorClass: 'form__input_invalid',
+  errorClass: 'form__input-error_active'
+};
+
+//включение валидации модальных окон
+const popupEditValidator = new FormValidator(validSettings, popupEdit);
+popupEditValidator.enableValidation();
+const popupAddValidator = new FormValidator(validSettings, popupAdd);
+popupAddValidator.enableValidation();
+const popupAvatarValidator = new FormValidator(validSettings, popupAvatar);
+popupAvatarValidator.enableValidation();
 
 //Заполняет профиль
 const renderProfile = (name, about) => {
@@ -182,19 +188,6 @@ popupAddForm.addEventListener('submit', () => {
     })
     .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
 });
-
-//enableValidation(validSettings);
-//включение валидации для формы редактирования профиля
-const popupEditProfileValidator = new FormValidator(validSettings, popupEdit);
-popupEditProfileValidator.enableValidation();
-
-//включение валидации для формы добавления карточки
-const popupAddCardValidator = new FormValidator(validSettings, popupAdd);
-popupAddCardValidator.enableValidation();
-
-//включение валидации для формы редактирования аватара
-const popupEditAvatarValidator = new FormValidator(validSettings, popupAvatar);
-popupEditAvatarValidator.enableValidation();
 
 setPopupListener();
 
