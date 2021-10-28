@@ -4,7 +4,8 @@ export default class Card {
   constructor(
     { likes, link, name, owner, _id: id },
     currentUserId,
-    templateSelector
+    templateSelector,
+   // handleCardClick
   ) {
     this._name = name;
     this._link = link;
@@ -15,6 +16,7 @@ export default class Card {
     this._currentUserId = currentUserId;
     // this._handleCardClick = handleCardClick;
     // this._handleCardDelete = handleCardDelete;
+    // this._handleCardClick = handleCardClick;
   }
 
   _getTemplate() {
@@ -111,6 +113,7 @@ export default class Card {
     this._toggleLikeBtnState();
   }
   // ****************************************************************************************************
+  // 
   // ****************************************************************************************************
 
   _setEventListeners() {

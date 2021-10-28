@@ -2,7 +2,7 @@
 import './index.css';
 
 // ----------------------------------------------validate
-import enableValidation from '../components/validate';
+//import enableValidation from '../components/validate';
 
 import FormValidator from '../components/validate'; //класс
 // -------------------------------------------------utils
@@ -13,12 +13,19 @@ import {
   setBtnLabel
 } from '../components/utils';
 
+
 // --------------------------------------------------card
 // import { addCard } from '../components/Card';
 import Card from '../components/Card';
 
 // -------------------------------------------------modal
 import { openPopup, closePopup } from '../components/modal';
+
+import PopupWithImage from '../components/PopupWithImage';
+
+import PopupWithForm from '../components/PopupWithForm';
+
+import PopupWithConfirm from '../components/PopupWithConfirm';
 
 import Api from '../components/API';
 
@@ -182,6 +189,12 @@ popupAddForm.addEventListener('submit', () => {
     })
     .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
 });
+
+//todo активация попапа с картинкой
+const popupImageSelector = '.popup-photo';
+const popupImage = new PopupWithImage(popupImageSelector);
+popupImage.setEventListeners();
+
 
 //enableValidation(validSettings);
 //включение валидации для формы редактирования профиля
