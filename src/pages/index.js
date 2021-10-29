@@ -21,6 +21,12 @@ import Card from '../components/Card';
 // -------------------------------------------------modal
 import { openPopup, closePopup } from '../components/modal';
 
+import PopupWithImage from '../components/PopupWithImage';
+
+import PopupWithForm from '../components/PopupWithForm';
+
+import PopupWithConfirm from '../components/PopupWithConfirm';
+
 import Api from '../components/API';
 
 //---+++++Глобальные переменные+++++---
@@ -211,6 +217,24 @@ popupAddForm.addEventListener('submit', () => {
     })
     .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
 });
+
+//todo активация попапа с картинкой
+const popupImageSelector = '.popup-photo';
+const popupImage = new PopupWithImage(popupImageSelector);
+popupImage.setEventListeners();
+
+//enableValidation(validSettings);
+//включение валидации для формы редактирования профиля
+const popupEditProfileValidator = new FormValidator(validSettings, popupEdit);
+popupEditProfileValidator.enableValidation();
+
+//включение валидации для формы добавления карточки
+const popupAddCardValidator = new FormValidator(validSettings, popupAdd);
+popupAddCardValidator.enableValidation();
+
+//включение валидации для формы редактирования аватара
+const popupEditAvatarValidator = new FormValidator(validSettings, popupAvatar);
+popupEditAvatarValidator.enableValidation();
 
 setPopupListener();
 
