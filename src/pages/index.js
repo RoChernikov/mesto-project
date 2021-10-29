@@ -94,6 +94,7 @@ const renderProfileForm = () => {
   popupEditInputAbout.value = profileAbout.textContent;
 };
 
+//Создает карточку
 const createNewCard = data => {
   const card = new Card(data, currentUserId, '#card-template');
   return card;
@@ -104,7 +105,6 @@ const cards = new Section(
     renderer: data => {
       const card = createNewCard(data);
       const cardElement = card.generateCard();
-      card.setLikeCounter(data);
       cards.addItem(cardElement, 'append');
     }
   },
