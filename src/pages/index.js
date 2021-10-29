@@ -2,9 +2,8 @@
 import './index.css';
 
 // ----------------------------------------------validate
-//import enableValidation from '../components/validate';
+import FormValidator from '../components/FormValidator';
 
-import FormValidator from '../components/validate'; //класс
 // -------------------------------------------------utils
 import {
   generateCards,
@@ -13,9 +12,10 @@ import {
   setBtnLabel
 } from '../components/utils';
 
+// -------------------------------------------------utils
+import Section from '../components/Section';
 
 // --------------------------------------------------card
-// import { addCard } from '../components/Card';
 import Card from '../components/Card';
 
 // -------------------------------------------------modal
@@ -28,16 +28,6 @@ import PopupWithForm from '../components/PopupWithForm';
 import PopupWithConfirm from '../components/PopupWithConfirm';
 
 import Api from '../components/API';
-
-// Параметры валидации
-const validSettings = {
-  formSelector: '.form',
-  inputSelector: '.form__input',
-  submitButtonSelector: '.form__submit',
-  inactiveButtonClass: 'form__submit_disabled',
-  inputErrorClass: 'form__input_invalid',
-  errorClass: 'form__input-error_active'
-};
 
 //---+++++Глобальные переменные+++++---
 //параметры запросов
@@ -80,6 +70,24 @@ const popupAddInputImgLink = popupAdd.querySelector(
 );
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
+// Параметры валидации
+const validSettings = {
+  formSelector: '.form',
+  inputSelector: '.form__input',
+  submitButtonSelector: '.form__submit',
+  inactiveButtonClass: 'form__submit_disabled',
+  inputErrorClass: 'form__input_invalid',
+  errorClass: 'form__input-error_active'
+};
+
+//включение валидации модальных окон
+const popupEditValidator = new FormValidator(validSettings, popupEdit);
+popupEditValidator.enableValidation();
+const popupAddValidator = new FormValidator(validSettings, popupAdd);
+popupAddValidator.enableValidation();
+const popupAvatarValidator = new FormValidator(validSettings, popupAvatar);
+popupAvatarValidator.enableValidation();
+
 //Заполняет профиль
 const renderProfile = (name, about) => {
   profileName.textContent = name;
@@ -92,17 +100,37 @@ const renderProfileForm = () => {
   popupEditInputAbout.value = profileAbout.textContent;
 };
 
+//Создает карточку
+const createNewCard = data => {
+  const card = new Card(data, currentUserId, '#card-template');
+  return card;
+};
+
+const cards = new Section(
+  {
+    renderer: data => {
+      const card = createNewCard(data);
+      const cardElement = card.generateCard();
+      cards.addItem(cardElement, 'append');
+    }
+  },
+  '.cards__list'
+);
+
 //---+++++Загрузка данных+++++---
-const loadData = Promise.all([api.getUserInfo(), api.getCards()])
+api
+  .loadData()
   .then(data => {
-    currentUserId = data[0]._id;
-    renderProfile(data[0].name, data[0].about);
-    profileAvatar.setAttribute('src', `${data[0].avatar}`);
-    generateCards(data[1]);
+    const [userData, cardsData] = data;
+    currentUserId = userData._id;
+    renderProfile(userData.name, userData.about);
+    profileAvatar.setAttribute('src', `${userData.avatar}`);
+    cards.renderItems(cardsData);
   })
   .catch(err => console.log(err));
 
 // Накладывает слушатель событий на все Pop-up-ы (закрытие)
+
 function setPopupListener() {
   popupList.forEach(item => {
     item.addEventListener('click', evt => {
@@ -195,7 +223,6 @@ const popupImageSelector = '.popup-photo';
 const popupImage = new PopupWithImage(popupImageSelector);
 popupImage.setEventListeners();
 
-
 //enableValidation(validSettings);
 //включение валидации для формы редактирования профиля
 const popupEditProfileValidator = new FormValidator(validSettings, popupEdit);
@@ -228,14 +255,3 @@ const makePopupsVisible = popupList =>
   popupList.forEach(popup => (popup.style.display = 'flex'));
 setTimeout(() => makePopupsVisible(popupList), 100);
 // ************************************************************************************************************
-
-const cardsList = document.querySelector('.cards__list');
-const testUserId = 'b83992c0161886588f5668dc';
-const testSelector = '#card-template';
-
-api.getCards().then(data =>
-  data.reverse().forEach(item => {
-    const card = new Card(item, testUserId, testSelector);
-    cardsList.prepend(card.generateCard());
-  })
-);

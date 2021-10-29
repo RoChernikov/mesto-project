@@ -61,8 +61,8 @@ export default class Card {
     }, 200);
   }
 
-  setLikeCounter() {
-    this._likeCounter.textContent = this._likes.length;
+  _setLikeCounter(data) {
+    this._likeCounter.textContent = data.likes.length;
   }
 
   //---+++++Увеличивает значение счетчика лайков+++++---
@@ -71,7 +71,7 @@ export default class Card {
       .likeCard(this._id)
       .then(data => {
         this._likeBtn.classList.add('cards__like-btn_active');
-        this.setLikeCounter();
+        this._setLikeCounter(data);
       })
       .catch(err => {
         console.log(err); // выводим ошибку в консоль
@@ -84,7 +84,7 @@ export default class Card {
       .dislikeCard(this._id)
       .then(data => {
         this._likeBtn.classList.remove('cards__like-btn_active');
-        this.setLikeCounter();
+        this._setLikeCounter(data);
       })
       .catch(err => {
         console.log(err); // выводим ошибку в консоль

@@ -77,6 +77,11 @@ export default class Api {
     }).then(this._getResponseData);
   }
 
+  //---+++++Загрузка всех данных+++++---
+  loadData() {
+    return Promise.all([this.getUserInfo(), this.getCards()]);
+  }
+
   //---+++++Обработчик ответа сервера+++++---
   _getResponseData(res) {
     if (res.ok) {
