@@ -123,12 +123,12 @@ export default class Card {
     this._card
       .querySelector('.cards__like-btn')
       .addEventListener('click', () => this._handleLikeClick()        
-      });
+      );
     this._card
       .querySelector('.cards__image')
       .addEventListener('click', () => {
-        console.log('слушатель');
-        this._handleCardClick(this._name, this._link)
+        //console.log('слушатель');
+        this._handleCardClick({name: this._name, link: this._link})
       });     
   }
 

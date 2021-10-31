@@ -21,7 +21,7 @@ module.exports = {
       },
     },
     compress: true,
-    port: 8080
+    port: 8060
   },
   module: {
     rules: [{

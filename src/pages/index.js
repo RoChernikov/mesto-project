@@ -19,7 +19,6 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 
 // -------------------------------------------------modal
-//import { openPopup, closePopup } from '../components/0_modal';
 
 import PopupWithImage from '../components/PopupWithImage';
 
@@ -80,14 +79,6 @@ const validSettings = {
   errorClass: 'form__input-error_active'
 };
 
-/*//включение валидации модальных окон
-const popupEditValidator = new FormValidator(validSettings, popupEdit);
-popupEditValidator.enableValidation();
-const popupAddValidator = new FormValidator(validSettings, popupAdd);
-popupAddValidator.enableValidation();
-const popupAvatarValidator = new FormValidator(validSettings, popupAvatar);
-popupAvatarValidator.enableValidation();*/
-
 //Заполняет профиль
 const renderProfile = (name, about) => {
   profileName.textContent = name;
@@ -101,12 +92,10 @@ const renderProfileForm = () => {
 };
 
 //Создает карточку
+const handleCardClick =  data => popupImage.open(data);
+
 const createNewCard = data => {
-  const card = new Card(data, currentUserId, '#card-template', {
-    handleCardClick: (data) => {
-      popupImage.open(data);
-    }
-  });
+  const card = new Card(data, currentUserId, '#card-template', handleCardClick);    
   return card;
 };
 
@@ -223,11 +212,12 @@ popupAddForm.addEventListener('submit', () => {
     .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
 });
 */
+
 //todo активация попапа с картинкой
 const popupImageSelector = '.popup-photo';
 const popupImage = new PopupWithImage(popupImageSelector);
-console.log('сделал попап с картинкой', popupImage);
 popupImage.setEventListeners();
+
 
 //enableValidation(validSettings);
 //включение валидации для всех форм //todo проверить и зменить после всего

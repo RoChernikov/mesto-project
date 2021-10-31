@@ -12,9 +12,9 @@ export default class PopupWithImage extends Popup {
   }
 
   open(data) {
+    super.open();
     this._popupPhotoImage.src = `${data.link}`;
     this._popupPhotoImage.alt = `${data.name}`;
-    this._popupPhotoFigcaption.textContent = `${data.name}`;
-    super.open()
+    this._popupPhotoFigcaption.textContent = `${data.name}`;    
   }
 }

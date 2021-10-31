@@ -18,7 +18,7 @@ export default class ImageLoader {
       .then(() => this._loaderName.classList.remove('spinner_visible'))
       .catch(() => {
         this._loaderName.classList.remove('spinner_visible');
-        this._image.classList.add(errorClass);
+        this._image.classList.add(this._errorClass);
       });
   }
 }
