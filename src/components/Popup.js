@@ -1,28 +1,22 @@
-// todo Создайте класс Popup
-/*Создайте класс Popup, который отвечает за открытие и закрытие попапа. Этот класс:
-
-    Принимает в конструктор единственный параметр — селектор попапа.
-    Содержит публичные методы open и close, которые отвечают за открытие и закрытие попапа.
-    Содержит приватный метод _handleEscClose, который содержит логику закрытия попапа клавишей Esc.
-    
-*/
-
 export default class Popup {
   constructor(popupSelector) {
-    this._popup = document.querySelector(popupSelector)
-    //this._handleEscClose = this._
+    this._popup = document.querySelector(popupSelector);
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
     
   open() {
     const popupContainer = this._popup.querySelector('.popup__container');
-    popupContainer.classList.add('popup__container_opened'); //todo зачем два раза?
+    const body = document.querySelector('.page');
+    popupContainer.classList.add('popup__container_opened'); 
     this._popup.classList.add('popup_opened');
-    body.classList.add('page_hold'); // todo overflow: hidden;  зачем это?
+    body.classList.add('page_hold'); // todo сделать по красоте
     document.addEventListener('keydown', this._handleEscClose);
+    console.log('открытие попапа');
   }
 
   close() {
     const popupContainer = this._popup.querySelector('.popup__container');
+    const body = document.querySelector('.page');
     popupContainer.classList.remove('popup__container_opened');
     this._popup.classList.remove('popup_opened');
     body.classList.remove('page_hold');
@@ -36,11 +30,6 @@ export default class Popup {
     }
   }
 
-//Модальное окно также закрывается при клике на затемнённую область вокруг формы.
-  _handleOverlayClose(evt) {
-    // todo не нашла это в коде
-  }
-
 //Содержит публичный метод setEventListeners, который добавляет слушатель клика
 // иконке закрытия попапа. 
   setEventListeners() {
@@ -51,4 +40,4 @@ export default class Popup {
       }        
     });
   }
-}
+} 

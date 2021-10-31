@@ -19,7 +19,6 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 
 // -------------------------------------------------modal
-import { openPopup, closePopup } from '../components/modal';
 
 import PopupWithImage from '../components/PopupWithImage';
 
@@ -80,14 +79,6 @@ const validSettings = {
   errorClass: 'form__input-error_active'
 };
 
-//включение валидации модальных окон
-const popupEditValidator = new FormValidator(validSettings, popupEdit);
-popupEditValidator.enableValidation();
-const popupAddValidator = new FormValidator(validSettings, popupAdd);
-popupAddValidator.enableValidation();
-const popupAvatarValidator = new FormValidator(validSettings, popupAvatar);
-popupAvatarValidator.enableValidation();
-
 //Заполняет профиль
 const renderProfile = (name, about) => {
   profileName.textContent = name;
@@ -101,11 +92,14 @@ const renderProfileForm = () => {
 };
 
 //Создает карточку
+const handleCardClick =  data => popupImage.open(data);
+
 const createNewCard = data => {
-  const card = new Card(data, currentUserId, '#card-template');
+  const card = new Card(data, currentUserId, '#card-template', handleCardClick);    
   return card;
 };
 
+//  отрисовка карточек
 const cards = new Section(
   {
     renderer: data => {
@@ -115,7 +109,7 @@ const cards = new Section(
     }
   },
   '.cards__list'
-);
+); 
 
 //---+++++Загрузка данных+++++---
 api
@@ -128,7 +122,7 @@ api
     cards.renderItems(cardsData);
   })
   .catch(err => console.log(err));
-
+/*
 // Накладывает слушатель событий на все Pop-up-ы (закрытие)
 
 function setPopupListener() {
@@ -141,8 +135,8 @@ function setPopupListener() {
         closePopup(evt.target.closest('.popup'));
     });
   });
-}
-
+}*/
+/*
 //Кнопка "редактировать"
 document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
   renderProfileForm();
@@ -217,13 +211,25 @@ popupAddForm.addEventListener('submit', () => {
     })
     .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
 });
+*/
 
 //todo активация попапа с картинкой
 const popupImageSelector = '.popup-photo';
 const popupImage = new PopupWithImage(popupImageSelector);
 popupImage.setEventListeners();
 
+
 //enableValidation(validSettings);
+//включение валидации для всех форм //todo проверить и зменить после всего
+/*const setValidation = (formElement) => {
+  const popupValidator = new FormValidator(validSettings, formElement);
+  popupValidator.enableValidation();
+}
+
+popupList.forEach(popup => {
+  setValidation(popup);
+})*/
+
 //включение валидации для формы редактирования профиля
 const popupEditProfileValidator = new FormValidator(validSettings, popupEdit);
 popupEditProfileValidator.enableValidation();
@@ -236,7 +242,7 @@ popupAddCardValidator.enableValidation();
 const popupEditAvatarValidator = new FormValidator(validSettings, popupAvatar);
 popupEditAvatarValidator.enableValidation();
 
-setPopupListener();
+//setPopupListener();
 
 // handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
 
