@@ -7,8 +7,8 @@ import Popup from './Popup';
 export default class PopupWithImage extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
-   // this._popupPhotoImage = //todo отобрать по классу?
-    //this._popupPhotoFigcaption = 
+    this._popupPhotoImage = this._popup.querySelector('.popup-photo__image'); 
+    this._popupPhotoFigcaption = this._popup.querySelector('.popup-photo__figcaption');
   }
 
   open(data) {

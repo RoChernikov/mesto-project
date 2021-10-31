@@ -5,7 +5,7 @@ export default class Card {
     { likes, link, name, owner, _id: id },
     currentUserId,
     templateSelector,
-   // handleCardClick
+    handleCardClick
   ) {
     this._name = name;
     this._link = link;
@@ -14,11 +14,11 @@ export default class Card {
     this._id = id;
     this._ownerId = owner._id;
     this._currentUserId = currentUserId;
-    // this._handleCardClick = handleCardClick;
+    this._handleCardClick = handleCardClick;
     // this._handleCardDelete = handleCardDelete;
     // this._handleCardClick = handleCardClick;
   }
-
+ 
   _getTemplate() {
     const cardElement = document
       .querySelector(this._templateSelector)
@@ -122,12 +122,14 @@ export default class Card {
     //   .addEventListener('click', () => this._handleCardDelete());
     this._card
       .querySelector('.cards__like-btn')
-      .addEventListener('click', () => this._handleLikeClick());
-    // this._card
-    //   .querySelector('.cards__image')
-    //   .addEventListener('click', () =>
-    //     this._handleCardClick(this._name, this._link)
-    //   );
+      .addEventListener('click', () => this._handleLikeClick()        
+      });
+    this._card
+      .querySelector('.cards__image')
+      .addEventListener('click', () => {
+        console.log('слушатель');
+        this._handleCardClick(this._name, this._link)
+      });     
   }
 
   generateCard() {

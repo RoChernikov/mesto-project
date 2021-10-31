@@ -9,8 +9,10 @@
 
 export default class Popup {
   constructor(popupSelector) {
-    this._popup = document.querySelector(popupSelector)
-    //this._handleEscClose = this._
+
+    this._popup = document.querySelector(popupSelector);
+    this._handleEscClose = this._handleEscClose.bind(this);
+    this._handleOverlayClose = this._handleOverlayClose.bind(this);
   }
     
   open() {
@@ -19,6 +21,7 @@ export default class Popup {
     this._popup.classList.add('popup_opened');
     body.classList.add('page_hold'); // todo overflow: hidden;  зачем это?
     document.addEventListener('keydown', this._handleEscClose);
+    console.log('открытие попапа');
   }
 
   close() {
@@ -38,7 +41,7 @@ export default class Popup {
 
 //Модальное окно также закрывается при клике на затемнённую область вокруг формы.
   _handleOverlayClose(evt) {
-    // todo не нашла это в коде
+    // todo не нашла это в коде  
   }
 
 //Содержит публичный метод setEventListeners, который добавляет слушатель клика
@@ -47,8 +50,8 @@ export default class Popup {
     this._popup.addEventListener('click', evt => {
       if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn')) {
         this.close();
-        //console.log('слушатель на попап установлен');
+        console.log('слушатель на попап установлен');
       }        
     });
   }
-}
+} 
