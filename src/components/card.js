@@ -16,7 +16,6 @@ export default class Card {
     this._currentUserId = currentUserId;
     this._handleCardClick = handleCardClick;
     // this._handleCardDelete = handleCardDelete;
-    // this._handleCardClick = handleCardClick;
   }
  
   _getTemplate() {
