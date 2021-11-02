@@ -10,8 +10,7 @@ export default class Popup {
     popupContainer.classList.add('popup__container_opened'); 
     this._popup.classList.add('popup_opened');
     body.classList.add('page_hold'); // todo сделать по красоте
-    document.addEventListener('keydown', this._handleEscClose);
-    console.log('открытие попапа');
+    document.addEventListener('keydown', this._handleEscClose);    
   }
 
   close() {
@@ -26,17 +25,14 @@ export default class Popup {
   _handleEscClose(evt) {
     if (evt.key === 'Escape') {
       this.close()
-      //removeDeleteMark(evt);
+      //removeDeleteMark(evt);//todo удаление
     }
   }
 
-//Содержит публичный метод setEventListeners, который добавляет слушатель клика
-// иконке закрытия попапа. 
   setEventListeners() {
     this._popup.addEventListener('click', evt => {
       if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-btn')) {
         this.close();
-        //console.log('слушатель на попап установлен');
       }        
     });
   }

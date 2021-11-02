@@ -5,7 +5,7 @@ export const generateCards = cardsArray => {
     addCard(data);
   });
 };
-
+//todo перенесена в класс попап с формой
 //---+++++Меняет надпись на кнопках форм+++++---
 export const setBtnLabel = (btnName, isLoading, defaultText) => {
   if (isLoading) {
