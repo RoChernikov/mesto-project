@@ -122,38 +122,6 @@ api
     cards.renderItems(cardsData);
   })
   .catch(err => console.log(err));
-/*
-// Накладывает слушатель событий на все Pop-up-ы (закрытие)
-
-function setPopupListener() {
-  popupList.forEach(item => {
-    item.addEventListener('click', evt => {
-      if (
-        evt.target.classList.contains('popup') ||
-        evt.target.classList.contains('popup__close-btn')
-      )
-        closePopup(evt.target.closest('.popup'));
-    });
-  });
-}*/
-/*
-//Кнопка "редактировать"
-document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
-  renderProfileForm();
-  openPopup(popupEdit);
-});
-
-//Кнопка редактирования аватара
-document
-  .querySelector('.profile__avatar-container')
-  .addEventListener('click', () => openPopup(popupAvatar));
-
-//Кнопка "добавить карточку"
-document
-  .querySelector('.page-btn_type_add')
-  .addEventListener('click', () => openPopup(popupAdd));
-*/
-
 
 /*
 //Функцианал редактирования профиля
@@ -229,6 +197,7 @@ const editInfoFormSubmitCallback =  data => {
   api
   .setUserInfo(data) //---+++++Обновляет информацию о пользователе+++++---
   .then(res => {
+    console.log('редактирование работает');
     renderProfile(res.name, res.about);
   })
   .catch(err => {
@@ -237,7 +206,7 @@ const editInfoFormSubmitCallback =  data => {
   .finally(() => {
     popupWithEditInfoForm.setBtnStatusSaving(false);
     popupWithEditInfoForm.close();
-  })
+  })    
 }  
 
 const popupWithEditInfoForm = new PopupWithForm(popupWithEditInfoSelector, editInfoFormSubmitCallback);
@@ -245,19 +214,22 @@ document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
   renderProfileForm(); //todo предзаполнение. оставить тут или добавить в класс?
   popupWithEditInfoForm.open();
 });
+
 popupWithEditInfoForm.setEventListeners();
 
-//todo активация попапа добавления карточки
+//активация попапа добавления карточки
 const popupWithAddNewCardSelector = '.popup-add';
 const addNewCardFormSubmitCallback = data => {
-  popupWithAddNewCardForm.setBtnStatusSaving(true);
+  popupWithAddNewCardForm.setBtnStatusSaving(true);  
   api
-  .postCard(data)
+  .postCard(data) //переписала ключ в api
   .then(res => {
-    console.log('добавляем карточку!!!!!!!!',res);
+    const card = createNewCard(res); //это дубль секшн, как его тут переиспользовать?
+    const cardElement = card.generateCard();
+    cards.addItem(cardElement, 'append');
   })
   .catch(err => {
-    console.log('ошибка тут',err); // выводим ошибку в консоль
+    console.log(err); // выводим ошибку в консоль
   })
   .finally(() => {
     popupWithAddNewCardForm.setBtnStatusSaving(false);
@@ -272,33 +244,25 @@ document.querySelector('.page-btn_type_add').addEventListener('click', () => {
 });
 popupWithAddNewCardForm.setEventListeners();
 
-/*
-//Функционал добавления карточки
-popupAddForm.addEventListener('submit', () => {
-  const data = {
-    name: popupAddInputImgTitle.value,
-    link: popupAddInputImgLink.value
-  };
-  setBtnLabel(popupAddBtn, true);
-  api
-    .postCard(data)
-    .then(res => {
-      addCard(res);
-      disableButton(popupAddBtn, validSettings.inactiveButtonClass);
-      closePopup(popupAdd);
-      popupAddForm.reset();
-    })
-    .catch(err => {
-      console.log(err); // выводим ошибку в консоль
-    })
-    .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
-});
-
-*/
-
-
 //todo активация попапа редактиования аватара
-const popupWithAvatarEditForm = new PopupWithForm('.popup-avatar');
+const popupWithAvatarEditFormSelector = '.popup-avatar';
+const avatarEditFormSubmitCallback = data => { //тут приходит объект, а не ссылка на аватарку...вытащить ссылку??
+  popupWithAvatarEditForm.setBtnStatusSaving(true);
+  console.log('input data', data);
+  api
+  .setAvatar(data) //todo не работает??
+  .then((res) => {
+    console.log(res);
+  })
+  .catch(err => {
+    console.log('ошибка установки аватара', err); // выводим ошибку в консоль
+  })
+  .finally(() => {
+    popupWithAvatarEditForm.setBtnStatusSaving(false);
+    popupWithAvatarEditForm.close();
+  })
+}
+const popupWithAvatarEditForm = new PopupWithForm(popupWithAvatarEditFormSelector, avatarEditFormSubmitCallback);
 
 document.querySelector('.profile__avatar-container').addEventListener('click', () => {
   popupWithAvatarEditForm.open();
