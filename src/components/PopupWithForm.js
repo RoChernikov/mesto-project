@@ -9,14 +9,14 @@ export default class PopupWithForm extends Popup {
     this._formInputList = this._popupForm.querySelectorAll('.form__input');
     this._btnName = this._popupForm.querySelector('.form__submit');
     this._defaultText = this._btnName.value;
+    this._newInputValues = {};
   }
   //Содержит приватный метод _getInputValues, который собирает данные всех полей формы.
-  _getInputValues() {
-    this._newInputValues = {};
-    this._formInputList.forEach(input => {
-      this._newInputValues[input.name] = input.value;
-     // console.log('input data', this._newInputValues);
+  _getInputValues() {    
+    this._formInputList.forEach(input => {   
+      this._newInputValues[input.name] = input.value;      
     })
+    console.log('input data пришла в  _getInputValues', this._newInputValues);
     return this._newInputValues
   }
 

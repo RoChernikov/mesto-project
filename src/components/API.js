@@ -36,7 +36,7 @@ export default class Api {
       method: 'POST',
       headers: this.headers,
       body: JSON.stringify({
-        name: newCard.name,
+        name: newCard.title,
         link: newCard.link
       })
     }).then(this._getResponseData);
