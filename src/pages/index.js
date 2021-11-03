@@ -49,11 +49,13 @@ const profileAvatar = profile.querySelector('.profile__avatar');
 const avatarSpinner = profile.querySelector('.profile__spinner');
 //Pop-Up редактирования профиля
 const popupEdit = document.querySelector('.popup-edit');
+const popupWithEditInfoSelector = '.popup-edit';
 const popupEditInputName = popupEdit.querySelector('.form__input_type_name');
 const popupEditInputAbout = popupEdit.querySelector('.form__input_type_about');
 const popupEditForm = popupEdit.querySelector('.form');
 const popupEditBtn = popupEdit.querySelector('.form__submit');
 //Pop-Up редактирования аватара
+const popupWithAvatarEditFormSelector = '.popup-avatar';
 const popupAvatar = document.querySelector('.popup-avatar');
 const popupAvatarForm = popupAvatar.querySelector('.form');
 const popupAvatarInput = document.querySelector(
@@ -69,6 +71,9 @@ const popupAddInputImgTitle = popupAdd.querySelector(
 const popupAddInputImgLink = popupAdd.querySelector(
   '.form__input_type_img-link'
 );
+const popupWithAddNewCardSelector = '.popup-add';
+const popupImageSelector = '.popup-photo';
+const popupWithDelConfirmSelector = '.popup-confirm';
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
 // Параметры валидации
@@ -87,11 +92,18 @@ const renderProfileForm = () => {
   popupEditInputAbout.value = profileAbout.textContent;
 };
 
+// ******************************************Попап с подтверждением удаления******************************************
+
+const popupWithDelConfirm = new PopupWithConfirm(popupWithDelConfirmSelector); //todo реализовать функционал
+popupWithDelConfirm.setEventListeners();
+
 //Создает карточку
 const handleCardClick = data => popupImage.open(data);
 
+const handleCardDelete = () => popupWithDelConfirm.open();  //todo сделать функционал удаления
+
 const createNewCard = data => {
-  const card = new Card(data, currentUserId, '#card-template', handleCardClick);
+  const card = new Card(data, currentUserId, '#card-template', handleCardClick, handleCardDelete);
   return card;
 };
 
@@ -129,89 +141,27 @@ const userInfo = new UserInfo({
   userAvatarSelector
 });
 
-/*
-//Функцианал редактирования профиля
-popupEditForm.addEventListener('submit', () => {
-  const profile = {
-    name: `${popupEditInputName.value}`,
-    about: `${popupEditInputAbout.value}`
-  };
-  setBtnLabel(popupEditBtn, true);
-  api
-    .setUserInfo(profile)
-    .then(data => {
-      renderProfile(data.name, data.about);
-      closePopup(popupEdit);
-    })
-    .catch(err => {
-      console.log(err); // выводим ошибку в консоль
-    })
-    .finally(() => setBtnLabel(popupEditBtn, false, 'Сохранить'));
-});
-
-// Функцианал редактирования аватара
-popupAvatar.addEventListener('submit', () => {
-  const link = popupAvatarInput.value;
-  setBtnLabel(popupAvatarBtn, true);
-  // handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
-  api
-    .setAvatar(link)
-    .then(data => {
-      profileAvatar.setAttribute('src', data.avatar);
-      disableButton(popupAvatarBtn, validSettings.inactiveButtonClass);
-      closePopup(popupAvatar);
-      popupAvatarForm.reset();
-    })
-    .catch(err => {
-      console.log(err); // выводим ошибку в консоль
-    })
-    .finally(() => setBtnLabel(popupAvatarBtn, false, 'Сохранить'));
-});
-
-//Функционал добавления карточки
-popupAddForm.addEventListener('submit', () => {
-  const data = {
-    name: popupAddInputImgTitle.value,
-    link: popupAddInputImgLink.value
-  };
-  setBtnLabel(popupAddBtn, true);
-  api
-    .postCard(data)
-    .then(res => {
-      addCard(res);
-      disableButton(popupAddBtn, validSettings.inactiveButtonClass);
-      closePopup(popupAdd);
-      popupAddForm.reset();
-    })
-    .catch(err => {
-      console.log(err); // выводим ошибку в консоль
-    })
-    .finally(() => setBtnLabel(popupAddBtn, false, 'Создать'));
-});
-*/
 // ******************************************Работа с попамапи******************************************
-//активация попапа с картинкой
-const popupImageSelector = '.popup-photo';
+
+
+// ******************************************Попап увеличенной фотографии******************************************
 const popupImage = new PopupWithImage(popupImageSelector);
 popupImage.setEventListeners();
 
-//активация попапа редакцтирования профиля
-
-const popupWithEditInfoSelector = '.popup-edit';
+// ******************************************Попап редактирования профиля******************************************
 const editInfoFormSubmitCallback = data => {
   popupWithEditInfoForm.setBtnStatusSaving(true);
   api
-    .setUserInfo(data) //---+++++Обновляет информацию о пользователе+++++---
+    .setUserInfo(data) 
     .then(res => {
-      console.log('редактирование работает');
       userInfo.setUserInfo(res);
+      popupWithEditInfoForm.close();
     })
     .catch(err => {
-      console.log(err); // выводим ошибку в консоль
+      console.log(err); 
     })
     .finally(() => {
-      popupWithEditInfoForm.setBtnStatusSaving(false);
-      popupWithEditInfoForm.close();
+      popupWithEditInfoForm.setBtnStatusSaving(false);      
     });
 };
 
@@ -219,30 +169,25 @@ const popupWithEditInfoForm = new PopupWithForm(
   popupWithEditInfoSelector,
   editInfoFormSubmitCallback
 );
-document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
-  renderProfileForm(); //todo предзаполнение. оставить тут или добавить в класс?
-  popupWithEditInfoForm.open();
-});
 
-popupWithEditInfoForm.setEventListeners();
-
-//активация попапа добавления карточки
-const popupWithAddNewCardSelector = '.popup-add';
+// ******************************************Попап добавления новой карточки******************************************
 const addNewCardFormSubmitCallback = data => {
   popupWithAddNewCardForm.setBtnStatusSaving(true);
+  console.log('в колбэк с карточкой пришла дата:', data);
   api
-    .postCard(data) //переписала ключ в api
+    .postCard(data) 
     .then(res => {
       const card = createNewCard(res); //это дубль секшн, как его тут переиспользовать?
       const cardElement = card.generateCard();
-      cards.addItem(cardElement, 'append');
+      cards.addItem(cardElement, 'append');      
+      //todo заблокировать кнопку
+      popupWithAddNewCardForm.close();
     })
     .catch(err => {
-      console.log(err); // выводим ошибку в консоль
+      console.log(err); 
     })
     .finally(() => {
-      popupWithAddNewCardForm.setBtnStatusSaving(false);
-      popupWithAddNewCardForm.close();
+      popupWithAddNewCardForm.setBtnStatusSaving(false);      
     });
 };
 
@@ -251,28 +196,21 @@ const popupWithAddNewCardForm = new PopupWithForm(
   addNewCardFormSubmitCallback
 );
 
-document.querySelector('.page-btn_type_add').addEventListener('click', () => {
-  popupWithAddNewCardForm.open();
-});
-popupWithAddNewCardForm.setEventListeners();
-
-//todo активация попапа редактиования аватара
-const popupWithAvatarEditFormSelector = '.popup-avatar';
-const avatarEditFormSubmitCallback = data => {
-  //тут приходит объект, а не ссылка на аватарку...вытащить ссылку??
-  popupWithAvatarEditForm.setBtnStatusSaving(true);
-  console.log('input data', data);
-  api
-    .setAvatar(data) //todo не работает??
+// ******************************************Попап редактирования аватара******************************************
+const avatarEditFormSubmitCallback = data => {  
+  popupWithAvatarEditForm.setBtnStatusSaving(true);  
+  api    
+    .setAvatar(data)
     .then(res => {
-      console.log(res);
+      userInfo.setUserAvatar(res.avatar);     
+      //todo заблокировать кнопку, при повторном открытии она активна
+      popupWithAvatarEditForm.close();
     })
     .catch(err => {
-      console.log('ошибка установки аватара', err); // выводим ошибку в консоль
+      console.log('ошибка установки аватара', err); 
     })
     .finally(() => {
-      popupWithAvatarEditForm.setBtnStatusSaving(false);
-      popupWithAvatarEditForm.close();
+      popupWithAvatarEditForm.setBtnStatusSaving(false);      
     });
 };
 const popupWithAvatarEditForm = new PopupWithForm(
@@ -280,14 +218,29 @@ const popupWithAvatarEditForm = new PopupWithForm(
   avatarEditFormSubmitCallback
 );
 
+// ******************************************Слушатели на открытие попапов******************************************
+document
+  .querySelector('.page-btn_type_edit')
+  .addEventListener('click', () => {
+    renderProfileForm(); //todo предзаполнение в форме полей. оставить тут или добавить в класс?
+    popupWithEditInfoForm.open();
+  });
+popupWithEditInfoForm.setEventListeners();
+
+document
+  .querySelector('.page-btn_type_add')
+  .addEventListener('click', () => {
+    popupWithAddNewCardForm.open();
+  });
+popupWithAddNewCardForm.setEventListeners();
+
 document
   .querySelector('.profile__avatar-container')
   .addEventListener('click', () => {
     popupWithAvatarEditForm.open();
   });
 popupWithAvatarEditForm.setEventListeners();
-
-//включение валидации для всех форм
+// ******************************************Валидация******************************************
 const setValidation = formElement => {
   const popupValidator = new FormValidator(validSettings, formElement);
   popupValidator.enableValidation();

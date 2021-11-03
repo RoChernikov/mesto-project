@@ -13,8 +13,8 @@ export const setBtnLabel = (btnName, isLoading, defaultText) => {
   } else {
     btnName.value = defaultText;
   }
-};
-
+}; 
+//todo перенесена в класс валидации
 //---+++++Деактивирует submit формы+++++---
 export const disableButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.add(inactiveButtonClass);
