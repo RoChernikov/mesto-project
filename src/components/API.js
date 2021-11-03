@@ -67,13 +67,13 @@ export default class Api {
   }
 
   //---+++++Обновляет аватар+++++---
-  setAvatar(link) {
+  setAvatar(link) {    
     return fetch(`${this.baseUrl}users/me/avatar`, {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify({
-        avatar: `${link}`
-      })
+        avatar: link.avatarlink,
+      })      
     }).then(this._getResponseData);
   }
 
