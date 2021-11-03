@@ -108,7 +108,6 @@ const popupWithConfirm = new PopupWithConfirm(popupWithConfirmSelector, {
       });
   }
 });
-popupWithConfirm.setEventListeners();
 
 //Создает карточку
 
@@ -161,7 +160,6 @@ const userInfo = new UserInfo({
 
 // ******************************************Попап увеличенной фотографии******************************************
 const popupImage = new PopupWithImage(popupImageSelector);
-popupImage.setEventListeners();
 
 // ******************************************Попап редактирования профиля******************************************
 const editInfoFormSubmitCallback = data => {
@@ -188,7 +186,6 @@ const popupWithEditInfoForm = new PopupWithForm(
 // ******************************************Попап добавления новой карточки******************************************
 const addNewCardFormSubmitCallback = data => {
   popupWithAddNewCardForm.setBtnStatusSaving(true);
-  console.log('в колбэк с карточкой пришла дата:', data);
   api
     .postCard(data)
     .then(res => {
@@ -196,13 +193,13 @@ const addNewCardFormSubmitCallback = data => {
       const cardElement = card.generateCard();
       cards.addItem(cardElement, 'append');
       //todo заблокировать кнопку
-      popupWithAddNewCardForm.close();
     })
     .catch(err => {
       console.log(err);
     })
     .finally(() => {
       popupWithAddNewCardForm.setBtnStatusSaving(false);
+      popupWithAddNewCardForm.close();
     });
 };
 
@@ -238,19 +235,16 @@ document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
   renderProfileForm(); //todo предзаполнение в форме полей. оставить тут или добавить в класс?
   popupWithEditInfoForm.open();
 });
-popupWithEditInfoForm.setEventListeners();
 
 document.querySelector('.page-btn_type_add').addEventListener('click', () => {
   popupWithAddNewCardForm.open();
 });
-popupWithAddNewCardForm.setEventListeners();
 
 document
   .querySelector('.profile__avatar-container')
   .addEventListener('click', () => {
     popupWithAvatarEditForm.open();
   });
-popupWithAvatarEditForm.setEventListeners();
 // ******************************************Валидация******************************************
 const setValidation = formElement => {
   const popupValidator = new FormValidator(validSettings, formElement);
