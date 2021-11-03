@@ -73,7 +73,7 @@ const popupAddInputImgLink = popupAdd.querySelector(
 );
 const popupWithAddNewCardSelector = '.popup-add';
 const popupImageSelector = '.popup-photo';
-const popupWithDelConfirmSelector = '.popup-confirm';
+const popupWithConfirmSelector = '.popup-confirm';
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
 // Параметры валидации
@@ -93,17 +93,33 @@ const renderProfileForm = () => {
 };
 
 // ******************************************Попап с подтверждением удаления******************************************
-
-const popupWithDelConfirm = new PopupWithConfirm(popupWithDelConfirmSelector); //todo реализовать функционал
-popupWithDelConfirm.setEventListeners();
+let currentCard = null;
+const popupWithConfirm = new PopupWithConfirm(popupWithConfirmSelector, {
+  submit: id => {
+    api
+      .deleteCard(id)
+      .then(() => currentCard.deleteCard())
+      .then(() => {
+        currentCard = null;
+        popupWithConfirm.close();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+});
+popupWithConfirm.setEventListeners();
 
 //Создает карточку
-const handleCardClick = data => popupImage.open(data);
-
-const handleCardDelete = () => popupWithDelConfirm.open();  //todo сделать функционал удаления
 
 const createNewCard = data => {
-  const card = new Card(data, currentUserId, '#card-template', handleCardClick, handleCardDelete);
+  const card = new Card(data, currentUserId, '#card-template', {
+    handleCardClick: data => popupImage.open(data),
+    handleCardDelete: () => {
+      currentCard = card;
+      popupWithConfirm.open(data._id);
+    }
+  });
   return card;
 };
 
@@ -143,7 +159,6 @@ const userInfo = new UserInfo({
 
 // ******************************************Работа с попамапи******************************************
 
-
 // ******************************************Попап увеличенной фотографии******************************************
 const popupImage = new PopupWithImage(popupImageSelector);
 popupImage.setEventListeners();
@@ -152,16 +167,16 @@ popupImage.setEventListeners();
 const editInfoFormSubmitCallback = data => {
   popupWithEditInfoForm.setBtnStatusSaving(true);
   api
-    .setUserInfo(data) 
+    .setUserInfo(data)
     .then(res => {
       userInfo.setUserInfo(res);
       popupWithEditInfoForm.close();
     })
     .catch(err => {
-      console.log(err); 
+      console.log(err);
     })
     .finally(() => {
-      popupWithEditInfoForm.setBtnStatusSaving(false);      
+      popupWithEditInfoForm.setBtnStatusSaving(false);
     });
 };
 
@@ -175,19 +190,19 @@ const addNewCardFormSubmitCallback = data => {
   popupWithAddNewCardForm.setBtnStatusSaving(true);
   console.log('в колбэк с карточкой пришла дата:', data);
   api
-    .postCard(data) 
+    .postCard(data)
     .then(res => {
       const card = createNewCard(res); //это дубль секшн, как его тут переиспользовать?
       const cardElement = card.generateCard();
-      cards.addItem(cardElement, 'append');      
+      cards.addItem(cardElement, 'append');
       //todo заблокировать кнопку
       popupWithAddNewCardForm.close();
     })
     .catch(err => {
-      console.log(err); 
+      console.log(err);
     })
     .finally(() => {
-      popupWithAddNewCardForm.setBtnStatusSaving(false);      
+      popupWithAddNewCardForm.setBtnStatusSaving(false);
     });
 };
 
@@ -197,20 +212,20 @@ const popupWithAddNewCardForm = new PopupWithForm(
 );
 
 // ******************************************Попап редактирования аватара******************************************
-const avatarEditFormSubmitCallback = data => {  
-  popupWithAvatarEditForm.setBtnStatusSaving(true);  
-  api    
+const avatarEditFormSubmitCallback = data => {
+  popupWithAvatarEditForm.setBtnStatusSaving(true);
+  api
     .setAvatar(data)
     .then(res => {
-      userInfo.setUserAvatar(res.avatar);     
+      userInfo.setUserAvatar(res.avatar);
       //todo заблокировать кнопку, при повторном открытии она активна
       popupWithAvatarEditForm.close();
     })
     .catch(err => {
-      console.log('ошибка установки аватара', err); 
+      console.log('ошибка установки аватара', err);
     })
     .finally(() => {
-      popupWithAvatarEditForm.setBtnStatusSaving(false);      
+      popupWithAvatarEditForm.setBtnStatusSaving(false);
     });
 };
 const popupWithAvatarEditForm = new PopupWithForm(
@@ -219,19 +234,15 @@ const popupWithAvatarEditForm = new PopupWithForm(
 );
 
 // ******************************************Слушатели на открытие попапов******************************************
-document
-  .querySelector('.page-btn_type_edit')
-  .addEventListener('click', () => {
-    renderProfileForm(); //todo предзаполнение в форме полей. оставить тут или добавить в класс?
-    popupWithEditInfoForm.open();
-  });
+document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
+  renderProfileForm(); //todo предзаполнение в форме полей. оставить тут или добавить в класс?
+  popupWithEditInfoForm.open();
+});
 popupWithEditInfoForm.setEventListeners();
 
-document
-  .querySelector('.page-btn_type_add')
-  .addEventListener('click', () => {
-    popupWithAddNewCardForm.open();
-  });
+document.querySelector('.page-btn_type_add').addEventListener('click', () => {
+  popupWithAddNewCardForm.open();
+});
 popupWithAddNewCardForm.setEventListeners();
 
 document
