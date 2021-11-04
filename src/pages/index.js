@@ -134,6 +134,15 @@ const cards = new Section(
   '.cards__list'
 );
 
+// Лоадер аватара
+import ImageLoader from '../components/ImageLoader';
+
+const avatarImageLoader = new ImageLoader(
+  profileAvatar,
+  avatarSpinner,
+  'profile__avataar_error'
+);
+
 //---+++++Загрузка данных+++++---
 api
   .loadData()
@@ -142,6 +151,7 @@ api
     currentUserId = userData._id;
     userInfo.setUserInfo(userData);
     profileAvatar.setAttribute('src', `${userData.avatar}`);
+    avatarImageLoader.initialize();
     cards.renderItems(cardsData);
   })
   .catch(err => console.log(err));
@@ -211,6 +221,7 @@ const popupWithAddNewCardForm = new PopupWithForm(
 // ******************************************Попап редактирования аватара******************************************
 const avatarEditFormSubmitCallback = data => {
   popupWithAvatarEditForm.setBtnStatusSaving(true);
+  avatarImageLoader.initialize();
   api
     .setAvatar(data)
     .then(res => {
