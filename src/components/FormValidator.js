@@ -66,6 +66,10 @@ export default class FormValidator {
   }
 
   _setEventListeners() {
+    this._formElement.addEventListener('reset', () => {
+      this._buttonElement.classList.add(this._inactiveButtonClass);
+      this._buttonElement.setAttribute('disabled', 'disabled');
+    });
     this._inputList.forEach(inputElement => {
       inputElement.addEventListener('input', () => {
         this._isValid(inputElement);
@@ -80,5 +84,5 @@ export default class FormValidator {
       evt.preventDefault();
     });
     this._setEventListeners();
-   }  
+  }
 }
