@@ -1,90 +1,49 @@
-// ------------------------------------------------styles
+// ------------------------------------------------------------styles
 import './index.css';
-
-// ----------------------------------------------validate
+// ---------------------------------------------------------------api
+import Api from '../components/API';
+// ----------------------------------------------------------validate
 import FormValidator from '../components/FormValidator';
-
-// -------------------------------------------------utils
-import {
-  generateCards,
-  disableButton,
-  // handleImageLoaderState,
-  setBtnLabel
-} from '../components/utils';
-
-// -------------------------------------------------utils
+// -----------------------------------------------------------section
 import Section from '../components/Section';
-
-// --------------------------------------------------card
+// --------------------------------------------------------------card
 import Card from '../components/Card';
-
-// -------------------------------------------------modal
-
+// ----------------------------------------------------------userinfo
+import UserInfo from '../components/UserInfo';
+// -------------------------------------------------------------modal
 import PopupWithImage from '../components/PopupWithImage';
 
 import PopupWithForm from '../components/PopupWithForm';
 
 import PopupWithConfirm from '../components/PopupWithConfirm';
+// ---------------------------------------------------------variables
+import {
+  validSettings,
+  fetchParams,
+  profileName,
+  profileAbout,
+  profileAvatar,
+  userNameSelector,
+  userCaptionSelector,
+  userAvatarSelector,
+  avatarSpinner,
+  popupEditInputName,
+  popupEditInputAbout,
+  popupEditSelector,
+  popupList,
+  popupAvatarSelector,
+  popupAddSelector,
+  popupImageSelector,
+  popupConfirmSelector,
+  containerSelector,
+  cardTemplateSelector,
+  avatarErrorClass
+} from '../utils/variables.js';
 
-import Api from '../components/API';
-
-import UserInfo from '../components/UserInfo';
-
-//---+++++Глобальные переменные+++++---
-//параметры запросов
-const fetchParams = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-2/',
-  headers: {
-    'authorization': '97ccf1bd-d259-459d-8352-7ffe6d750b35',
-    'Content-Type': 'application/json'
-  }
-};
 export const api = new Api(fetchParams);
-//профиль
-export let currentUserId = null;
-const profile = document.querySelector('.profile');
-const profileName = profile.querySelector('.profile__name');
-const profileAbout = profile.querySelector('.profile__about');
-const profileAvatar = profile.querySelector('.profile__avatar');
-const avatarSpinner = profile.querySelector('.profile__spinner');
-//Pop-Up редактирования профиля
-const popupEdit = document.querySelector('.popup-edit');
-const popupWithEditInfoSelector = '.popup-edit';
-const popupEditInputName = popupEdit.querySelector('.form__input_type_name');
-const popupEditInputAbout = popupEdit.querySelector('.form__input_type_about');
-const popupEditForm = popupEdit.querySelector('.form');
-const popupEditBtn = popupEdit.querySelector('.form__submit');
-//Pop-Up редактирования аватара
-const popupWithAvatarEditFormSelector = '.popup-avatar';
-const popupAvatar = document.querySelector('.popup-avatar');
-const popupAvatarForm = popupAvatar.querySelector('.form');
-const popupAvatarInput = document.querySelector(
-  '.form__input_type_avatar-link'
-);
-const popupAvatarBtn = popupAvatar.querySelector('.form__submit');
-const popupAdd = document.querySelector('.popup-add');
-const popupAddForm = popupAdd.querySelector('.form');
-const popupAddBtn = popupAdd.querySelector('.form__submit');
-const popupAddInputImgTitle = popupAdd.querySelector(
-  '.form__input_type_img-title'
-);
-const popupAddInputImgLink = popupAdd.querySelector(
-  '.form__input_type_img-link'
-);
-const popupWithAddNewCardSelector = '.popup-add';
-const popupImageSelector = '.popup-photo';
-const popupWithConfirmSelector = '.popup-confirm';
-const popupList = Array.from(document.querySelectorAll('.popup'));
 
-// Параметры валидации
-const validSettings = {
-  formSelector: '.form',
-  inputSelector: '.form__input',
-  submitButtonSelector: '.form__submit',
-  inactiveButtonClass: 'form__submit_disabled',
-  inputErrorClass: 'form__input_invalid',
-  errorClass: 'form__input-error_active'
-};
+let currentUserId = null;
+let currentCard = null;
 
 //Заполняет форму попапа редактирования профиля
 const renderProfileForm = () => {
@@ -93,8 +52,7 @@ const renderProfileForm = () => {
 };
 
 // ******************************************Попап с подтверждением удаления******************************************
-let currentCard = null;
-const popupWithConfirm = new PopupWithConfirm(popupWithConfirmSelector, {
+const popupWithConfirm = new PopupWithConfirm(popupConfirmSelector, {
   submit: id => {
     api
       .deleteCard(id)
@@ -110,9 +68,8 @@ const popupWithConfirm = new PopupWithConfirm(popupWithConfirmSelector, {
 });
 
 //Создает карточку
-
 const createNewCard = data => {
-  const card = new Card(data, currentUserId, '#card-template', {
+  const card = new Card(data, currentUserId, cardTemplateSelector, {
     handleCardClick: data => popupImage.open(data),
     handleCardDelete: () => {
       currentCard = card;
@@ -131,7 +88,7 @@ const cards = new Section(
       cards.addItem(cardElement, 'append');
     }
   },
-  '.cards__list'
+  containerSelector
 );
 
 // Лоадер аватара
@@ -140,7 +97,7 @@ import ImageLoader from '../components/ImageLoader';
 const avatarImageLoader = new ImageLoader(
   profileAvatar,
   avatarSpinner,
-  'profile__avataar_error'
+  avatarErrorClass
 );
 
 //---+++++Загрузка данных+++++---
@@ -155,10 +112,6 @@ api
     cards.renderItems(cardsData);
   })
   .catch(err => console.log(err));
-
-const userNameSelector = '.profile__name';
-const userCaptionSelector = '.profile__about';
-const userAvatarSelector = '.profile__avatar';
 
 const userInfo = new UserInfo({
   userNameSelector,
@@ -189,7 +142,7 @@ const editInfoFormSubmitCallback = data => {
 };
 
 const popupWithEditInfoForm = new PopupWithForm(
-  popupWithEditInfoSelector,
+  popupEditSelector,
   editInfoFormSubmitCallback
 );
 
@@ -214,7 +167,7 @@ const addNewCardFormSubmitCallback = data => {
 };
 
 const popupWithAddNewCardForm = new PopupWithForm(
-  popupWithAddNewCardSelector,
+  popupAddSelector,
   addNewCardFormSubmitCallback
 );
 
@@ -237,7 +190,7 @@ const avatarEditFormSubmitCallback = data => {
     });
 };
 const popupWithAvatarEditForm = new PopupWithForm(
-  popupWithAvatarEditFormSelector,
+  popupAvatarSelector,
   avatarEditFormSubmitCallback
 );
 
@@ -265,8 +218,6 @@ const setValidation = formElement => {
 popupList.forEach(popup => {
   setValidation(popup);
 });
-
-// handleImageLoaderState(profileAvatar, avatarSpinner, 'profile__avatar_error');
 
 // ******************************************ЭТА ФУНКЦИЯ УБИРАЕТ БАГ!******************************************
 // **________________________________________________________________________________________________________**
