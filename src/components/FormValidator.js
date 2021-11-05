@@ -68,7 +68,7 @@ export default class FormValidator {
   _setEventListeners() {
     this._formElement.addEventListener('reset', () => {
       this._buttonElement.classList.add(this._inactiveButtonClass);
-      this._buttonElement.setAttribute('disabled', 'disabled');
+      this._buttonElement.setAttribute('disabled', 'disabled'); // отключение кнопки сабмита
     });
     this._inputList.forEach(inputElement => {
       inputElement.addEventListener('input', () => {

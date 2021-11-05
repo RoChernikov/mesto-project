@@ -15,13 +15,13 @@ export default class PopupWithConfirm extends Popup {
     this._form.removeEventListener('submit', this._submitEvtHandler);
   }
 
-  setEventListeners() {
+  _setEventListeners() {
     this._form.addEventListener('submit', this._submitEvtHandler);
-    super.setEventListeners();
+    super._setEventListeners();
   }
 
   open(id) {
-    this.setEventListeners();
+    this._setEventListeners();
     this._id = id;
     super.open();
   }

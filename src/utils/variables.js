@@ -36,6 +36,7 @@ export const popupList = Array.from(document.querySelectorAll('.popup'));
 // ---------------------------------------------------------селекторы
 export const userNameSelector = '.profile__name';
 export const userCaptionSelector = '.profile__about';
+export const avatarEditSelector = '.profile__avatar-container';
 export const userAvatarSelector = '.profile__avatar';
 export const popupAvatarSelector = '.popup-avatar';
 export const popupAddSelector = '.popup-add';
@@ -45,3 +46,5 @@ export const popupEditSelector = '.popup-edit';
 export const containerSelector = '.cards__list';
 export const cardTemplateSelector = '#card-template';
 export const avatarErrorClass = 'profile__avatar_error';
+export const addNewCardBtnSelector = '.page-btn_type_add';
+export const userEditBtnSelector = '.page-btn_type_edit';

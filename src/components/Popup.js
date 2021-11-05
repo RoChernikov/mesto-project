@@ -12,7 +12,7 @@ export default class Popup {
     popupContainer.classList.add('popup__container_opened');
     this._popup.classList.add('popup_opened');
     body.classList.add('page_hold'); // todo сделать по красоте
-    this.setEventListeners();
+    this._setEventListeners();
   }
 
   close() {
@@ -39,7 +39,7 @@ export default class Popup {
     }
   }
 
-  setEventListeners() {
+  _setEventListeners() {
     this._popup.addEventListener('click', this._handleClickClose);
     document.addEventListener('keydown', this._handleEscClose);
   }
