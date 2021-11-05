@@ -1,5 +1,6 @@
 import ImageLoader from './ImageLoader';
 import { api } from '../pages/index';
+
 export default class Card {
   constructor(
     { likes, link, name, owner, _id: id },
@@ -45,8 +46,7 @@ export default class Card {
         .querySelector('.cards__like-btn')
         .classList.toggle('cards__like-btn_active');
   }
-  // **********************************************ЛАЙКИ*************************************************
-  // ****************************************************************************************************
+  // ----------------------------------------------------Функционал лайков
 
   //---+++++Сворачивает контейнер лайков+++++---
   _closeLikeContainer() {
@@ -73,7 +73,7 @@ export default class Card {
         this._setLikeCounter(data);
       })
       .catch(err => {
-        console.log(err); // выводим ошибку в консоль
+        console.log(err); 
       });
   }
 
@@ -86,7 +86,7 @@ export default class Card {
         this._setLikeCounter(data);
       })
       .catch(err => {
-        console.log(err); // выводим ошибку в консоль
+        console.log(err); 
       });
   }
 
@@ -111,9 +111,7 @@ export default class Card {
     }
     this._toggleLikeBtnState();
   }
-  // ****************************************************************************************************
-  // ****************************************************************************************************
-
+  
   _setEventListeners() {
     this._card
       .querySelector('.cards__trash-btn')

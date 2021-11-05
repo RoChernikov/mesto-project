@@ -7,7 +7,7 @@ import FormValidator from '../components/FormValidator';
 // -----------------------------------------------------------section
 import Section from '../components/Section';
 // --------------------------------------------------------------card
-import Card from '../components/Card';
+import Card from '../components/Сard';
 // ----------------------------------------------------------userinfo
 import UserInfo from '../components/UserInfo';
 // -------------------------------------------------------------modal
@@ -26,6 +26,7 @@ import {
   userNameSelector,
   userCaptionSelector,
   userAvatarSelector,
+  avatarEditSelector,
   avatarSpinner,
   popupEditInputName,
   popupEditInputAbout,
@@ -37,21 +38,29 @@ import {
   popupConfirmSelector,
   containerSelector,
   cardTemplateSelector,
-  avatarErrorClass
+  avatarErrorClass,
+  addNewCardBtnSelector,
+  userEditBtnSelector
 } from '../utils/variables.js';
+
+// ----------------------------------------------------avatar loader
+
+import ImageLoader from '../components/ImageLoader';
 
 export const api = new Api(fetchParams);
 
 let currentUserId = null;
 let currentCard = null;
 
-//Заполняет форму попапа редактирования профиля
+// --------------------заполняет форму попапа редактирования профиля
+
 const renderProfileForm = () => {
   popupEditInputName.value = profileName.textContent;
   popupEditInputAbout.value = profileAbout.textContent;
 };
 
-// ******************************************Попап с подтверждением удаления******************************************
+// ----------------------функционал попапп с подтверждением удаления
+
 const popupWithConfirm = new PopupWithConfirm(popupConfirmSelector, {
   submit: id => {
     api
@@ -67,7 +76,8 @@ const popupWithConfirm = new PopupWithConfirm(popupConfirmSelector, {
   }
 });
 
-//Создает карточку
+// -----------------------------------------создание новой карточки
+
 const createNewCard = data => {
   const card = new Card(data, currentUserId, cardTemplateSelector, {
     handleCardClick: data => popupImage.open(data),
@@ -79,7 +89,8 @@ const createNewCard = data => {
   return card;
 };
 
-//  отрисовка карточек
+// ----------------------------------------------отрисовка карточек
+
 const cards = new Section(
   {
     renderer: data => {
@@ -91,16 +102,14 @@ const cards = new Section(
   containerSelector
 );
 
-// Лоадер аватара
-import ImageLoader from '../components/ImageLoader';
-
 const avatarImageLoader = new ImageLoader(
   profileAvatar,
   avatarSpinner,
   avatarErrorClass
 );
 
-//---+++++Загрузка данных+++++---
+// ---------------------------------------загрузка данных с сервера
+
 api
   .loadData()
   .then(data => {
@@ -119,12 +128,12 @@ const userInfo = new UserInfo({
   userAvatarSelector
 });
 
-// ******************************************Работа с попамапи******************************************
+// ---------------------функционал попапа с уведичением фотографии
 
-// ******************************************Попап увеличенной фотографии******************************************
 const popupImage = new PopupWithImage(popupImageSelector);
 
-// ******************************************Попап редактирования профиля******************************************
+// ---------------------функционал попапа с редактирования профиля
+
 const editInfoFormSubmitCallback = data => {
   popupWithEditInfoForm.setBtnStatusSaving(true);
   api
@@ -134,7 +143,7 @@ const editInfoFormSubmitCallback = data => {
       popupWithEditInfoForm.close();
     })
     .catch(err => {
-      console.log(err);
+      console.log('Ошибка редактирования профиля', err);
     })
     .finally(() => {
       popupWithEditInfoForm.setBtnStatusSaving(false);
@@ -146,19 +155,19 @@ const popupWithEditInfoForm = new PopupWithForm(
   editInfoFormSubmitCallback
 );
 
-// ******************************************Попап добавления новой карточки******************************************
+// ------------------функционал попапа добавления новой карточки
+
 const addNewCardFormSubmitCallback = data => {
   popupWithAddNewCardForm.setBtnStatusSaving(true);
   api
     .postCard(data)
     .then(res => {
-      const card = createNewCard(res); //это дубль секшн, как его тут переиспользовать?
+      const card = createNewCard(res); 
       const cardElement = card.generateCard();
       cards.addItem(cardElement, 'append');
-      //todo заблокировать кнопку
     })
     .catch(err => {
-      console.log(err);
+      console.log('Ошибка добавления карточки', err);
     })
     .finally(() => {
       popupWithAddNewCardForm.setBtnStatusSaving(false);
@@ -171,19 +180,19 @@ const popupWithAddNewCardForm = new PopupWithForm(
   addNewCardFormSubmitCallback
 );
 
-// ******************************************Попап редактирования аватара******************************************
+// ------------------функционал попапа с редактирования аватара
+
 const avatarEditFormSubmitCallback = data => {
   popupWithAvatarEditForm.setBtnStatusSaving(true);
   avatarImageLoader.initialize();
   api
     .setAvatar(data)
     .then(res => {
-      userInfo.setUserAvatar(res.avatar);
-      //todo заблокировать кнопку, при повторном открытии она активна
+      userInfo.setUserAvatar(res.avatar);      
       popupWithAvatarEditForm.close();
     })
     .catch(err => {
-      console.log('ошибка установки аватара', err);
+      console.log('Ошибка установки аватара', err);
     })
     .finally(() => {
       popupWithAvatarEditForm.setBtnStatusSaving(false);
@@ -194,23 +203,30 @@ const popupWithAvatarEditForm = new PopupWithForm(
   avatarEditFormSubmitCallback
 );
 
-// ******************************************Слушатели на открытие попапов******************************************
-document.querySelector('.page-btn_type_edit').addEventListener('click', () => {
-  renderProfileForm(); //todo предзаполнение в форме полей. оставить тут или добавить в класс?
-  popupWithEditInfoForm.open();
-});
+// -----------наложение слушателей на кнопки открытия попапов
 
-document.querySelector('.page-btn_type_add').addEventListener('click', () => {
-  popupWithAddNewCardForm.open();
+document
+  .querySelector(userEditBtnSelector)
+  .addEventListener('click', () => {
+    renderProfileForm(); 
+    popupWithEditInfoForm.open();
 });
 
 document
-  .querySelector('.profile__avatar-container')
+  .querySelector(addNewCardBtnSelector)
+  .addEventListener('click', () => {
+    popupWithAddNewCardForm.open();
+});
+
+document
+  .querySelector(avatarEditSelector)
   .addEventListener('click', () => {
     popupWithAvatarEditForm.open();
   });
-// ******************************************Валидация******************************************
-const setValidation = formElement => {
+
+// -----------------------------------инициализация валидации
+
+  const setValidation = formElement => {
   const popupValidator = new FormValidator(validSettings, formElement);
   popupValidator.enableValidation();
 };

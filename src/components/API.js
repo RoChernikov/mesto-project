@@ -4,14 +4,14 @@ export default class Api {
     this.headers = headers;
   }
 
-  //---+++++Запрашивает информацию о пользователе+++++---
+ // ----------------------------------Запрашивает информацию о пользователе
   getUserInfo() {
     return fetch(`${this.baseUrl}users/me`, {
       headers: this.headers
     }).then(this._getResponseData);
   }
 
-  //---+++++Обновляет информацию о пользователе+++++---
+ // ------------------------------------Обновляет информацию о пользователе
   setUserInfo(profile) {
     return fetch(`${this.baseUrl}users/me`, {
       method: 'PATCH',
@@ -23,14 +23,14 @@ export default class Api {
     }).then(this._getResponseData);
   }
 
-  //---+++++Запрашивает карточки+++++---
+ // --------------------------------------------------Запрашивает карточки
   getCards() {
     return fetch(`${this.baseUrl}cards`, {
       headers: this.headers
     }).then(this._getResponseData);
   }
 
-  //---+++++Постит карточки+++++---
+ // -------------------------------------------------------Постит карточки
   postCard(newCard) {
     return fetch(`${this.baseUrl}cards`, {
       method: 'POST',
@@ -42,7 +42,7 @@ export default class Api {
     }).then(this._getResponseData);
   }
 
-  //---+++++Удаляет карточки+++++---
+ // -----------------------------------------------------Удаляет карточки
   deleteCard(id) {
     return fetch(`${this.baseUrl}cards/${id}`, {
       method: 'DELETE',
@@ -50,7 +50,7 @@ export default class Api {
     }).then(this._getResponseData);
   }
 
-  //---+++++Добавляет лайк карточке+++++---
+  // -----------------------------------------------------Добавляет лайк
   likeCard(id) {
     return fetch(`${this.baseUrl}cards/likes/${id}`, {
       method: 'PUT',
@@ -58,7 +58,7 @@ export default class Api {
     }).then(this._getResponseData);
   }
 
-  //---+++++Удаляет лайк у карточки+++++---
+ // ---------------------------------------------------------Удаляет лайк
   dislikeCard(id) {
     return fetch(`${this.baseUrl}cards/likes/${id}`, {
       method: 'DELETE',
@@ -66,7 +66,7 @@ export default class Api {
     }).then(this._getResponseData);
   }
 
-  //---+++++Обновляет аватар+++++---
+ // ----------------------------------------------------Обновляет аватар
   setAvatar(link) {    
     return fetch(`${this.baseUrl}users/me/avatar`, {
       method: 'PATCH',
@@ -77,12 +77,12 @@ export default class Api {
     }).then(this._getResponseData);
   }
 
-  //---+++++Загрузка всех данных+++++---
+  // -----------------------------------------------Загрузка всех данных
   loadData() {
     return Promise.all([this.getUserInfo(), this.getCards()]);
   }
 
-  //---+++++Обработчик ответа сервера+++++---
+ // -------------------------------------------Обработчик ответа сервера
   _getResponseData(res) {
     if (res.ok) {
       return res.json();
