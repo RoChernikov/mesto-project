@@ -138,7 +138,6 @@
 
 ## Второй контрибьютор:
 
-Наталия Солнцева
+Наталия Солнцева (Shnatalee@yandex.ru)
 
-- [Github](https://github.com/NatashaSolntseva)
-- [Почта](Shnatalee@yandex.ru)
+- [Сслыка на Github](https://github.com/NatashaSolntseva)
