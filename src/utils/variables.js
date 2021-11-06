@@ -30,21 +30,25 @@ export const popupEditInputName = popupEdit.querySelector(
 export const popupEditInputAbout = popupEdit.querySelector(
   '.form__input_type_about'
 );
+//Кнопки открытия попапов
+export const editProfileBtn = document.querySelector('.page-btn_type_edit');
+export const addCardBtn = document.querySelector('.page-btn_type_add');
+export const avatarEditBtn = document.querySelector(
+  '.profile__avatar-container'
+);
 //Массив pop-up-ов
 export const popupList = Array.from(document.querySelectorAll('.popup'));
 
 // ---------------------------------------------------------селекторы
 export const userNameSelector = '.profile__name';
 export const userCaptionSelector = '.profile__about';
-export const avatarEditSelector = '.profile__avatar-container';
 export const userAvatarSelector = '.profile__avatar';
 export const popupAvatarSelector = '.popup-avatar';
 export const popupAddSelector = '.popup-add';
 export const popupImageSelector = '.popup-photo';
 export const popupConfirmSelector = '.popup-confirm';
-export const popupEditSelector = '.popup-edit';
+export const popupEditProfileSelector = '.popup-edit';
 export const containerSelector = '.cards__list';
 export const cardTemplateSelector = '#card-template';
 export const avatarErrorClass = 'profile__avatar_error';
-export const addNewCardBtnSelector = '.page-btn_type_add';
-export const userEditBtnSelector = '.page-btn_type_edit';
+export const cardImageErrorClass = 'cards__image_error';

@@ -1,12 +1,9 @@
-import ImageLoader from './ImageLoader';
-import { api } from '../pages/index';
-
 export default class Card {
   constructor(
     { likes, link, name, owner, _id: id },
     currentUserId,
     templateSelector,
-    { handleCardClick, handleCardDelete, handleLikeClick }
+    { handleCardClick, handleCardDelete, handleLikeClick, cardImageloader }
   ) {
     this._name = name;
     this._link = link;
@@ -18,6 +15,7 @@ export default class Card {
     this._handleCardClick = handleCardClick;
     this._handleCardDelete = handleCardDelete;
     this._handleLikeClick = handleLikeClick;
+    this._imageloader = cardImageloader;
   }
 
   _getTemplate() {
@@ -37,11 +35,6 @@ export default class Card {
     this._likeBtn = this._card.querySelector('.cards__like-btn');
     this._trashBtn = this._card.querySelector('.cards__trash-btn');
     this._spinner = this._card.querySelector('.cards__spinner');
-    const imageLoader = new ImageLoader(
-      this._cardImage,
-      this._spinner,
-      'cards__image_error'
-    );
     this._cardImage.src = this._link;
     this._cardImage.alt = this._name;
     this._cardHeading.textContent = this._name;
@@ -49,7 +42,7 @@ export default class Card {
     this._setTrashBtnState();
     this._setLikeState();
     this._setEventListeners();
-    imageLoader.initialize(); // <----------------------------------------------------------ПЕРЕДЕЛАТЬ
+    this._imageloader();
     return this._card;
   }
 
@@ -112,78 +105,3 @@ export default class Card {
     });
   }
 }
-
-//**********************************************************************************************************************************************
-//**********************************************************************************************************************************************
-//**********************************************************************************************************************************************
-//**********************************************************************************************************************************************
-// ----------------------------------------------------Функционал лайков
-/*
-  //---+++++Сворачивает контейнер лайков+++++---
-  _closeLikeContainer() {
-    this._likeCounter.classList.remove('cards__like-counter_active');
-  }
-
-  //---+++++Разворачивает контейнер лайков+++++---
-  _openLikeContainer() {
-    setTimeout(() => {
-      this._likeCounter.classList.add('cards__like-counter_active');
-    }, 200);
-  }
-
-  _setLikeCounter(data) {
-    this._likeCounter.textContent = data.likes.length;
-  }
-
-  //---+++++Увеличивает значение счетчика лайков+++++---
-  _increaseLikeCounter() {
-    api
-      .likeCard(this._id)
-      .then(data => {
-        this._likeBtn.classList.add('cards__like-btn_active');
-        this._setLikeCounter(data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  //---+++++Уменьшает значение счетчика лайков+++++---
-  _decreaseLikeCounter() {
-    api
-      .dislikeCard(this._id)
-      .then(data => {
-        this._likeBtn.classList.remove('cards__like-btn_active');
-        this._setLikeCounter(data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  //---+++++Переключает состояние кнопки лайка+++++---
-  _toggleLikeBtnState() {
-    if (this._likeBtn.classList.contains('cards__like-btn_active')) {
-      this._decreaseLikeCounter();
-    } else {
-      this._increaseLikeCounter();
-    }
-  }
-
-  //---+++++Переключает состояние лайка и его счетчика+++++---
-  _handleLikeClick() {
-    if (+this._likeCounter.textContent === 0) {
-      this._openLikeContainer();
-    } else if (
-      +this._likeCounter.textContent === 1 &&
-      this._likeBtn.classList.contains('cards__like-btn_active')
-    ) {
-      this._closeLikeContainer();
-    }
-    this._toggleLikeBtnState();
-  }
-  */
-//**********************************************************************************************************************************************
-//**********************************************************************************************************************************************
-//**********************************************************************************************************************************************
-//**********************************************************************************************************************************************
