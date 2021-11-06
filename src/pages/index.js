@@ -78,13 +78,27 @@ const popupWithConfirm = new PopupWithConfirm(popupConfirmSelector, {
 
 // -----------------------------------------создание новой карточки
 
+function handleLikeClick(card, data) {
+  const promise = card.isLiked()
+    ? api.dislikeCard(data._id)
+    : api.likeCard(data._id);
+  promise
+    .then(data => {
+      card.setLike(data);
+    })
+    .catch(err => {
+      console.log(`${err}`);
+    });
+}
+
 const createNewCard = data => {
   const card = new Card(data, currentUserId, cardTemplateSelector, {
     handleCardClick: data => popupImage.open(data),
     handleCardDelete: () => {
       currentCard = card;
       popupWithConfirm.open(data._id);
-    }
+    },
+    handleLikeClick: () => handleLikeClick(card, data)
   });
   return card;
 };
@@ -162,7 +176,7 @@ const addNewCardFormSubmitCallback = data => {
   api
     .postCard(data)
     .then(res => {
-      const card = createNewCard(res); 
+      const card = createNewCard(res);
       const cardElement = card.generateCard();
       cards.addItem(cardElement, 'append');
     })
@@ -188,7 +202,7 @@ const avatarEditFormSubmitCallback = data => {
   api
     .setAvatar(data)
     .then(res => {
-      userInfo.setUserAvatar(res.avatar);      
+      userInfo.setUserAvatar(res.avatar);
       popupWithAvatarEditForm.close();
     })
     .catch(err => {
@@ -205,28 +219,22 @@ const popupWithAvatarEditForm = new PopupWithForm(
 
 // -----------наложение слушателей на кнопки открытия попапов
 
-document
-  .querySelector(userEditBtnSelector)
-  .addEventListener('click', () => {
-    renderProfileForm(); 
-    popupWithEditInfoForm.open();
+document.querySelector(userEditBtnSelector).addEventListener('click', () => {
+  renderProfileForm();
+  popupWithEditInfoForm.open();
 });
 
-document
-  .querySelector(addNewCardBtnSelector)
-  .addEventListener('click', () => {
-    popupWithAddNewCardForm.open();
+document.querySelector(addNewCardBtnSelector).addEventListener('click', () => {
+  popupWithAddNewCardForm.open();
 });
 
-document
-  .querySelector(avatarEditSelector)
-  .addEventListener('click', () => {
-    popupWithAvatarEditForm.open();
-  });
+document.querySelector(avatarEditSelector).addEventListener('click', () => {
+  popupWithAvatarEditForm.open();
+});
 
 // -----------------------------------инициализация валидации
 
-  const setValidation = formElement => {
+const setValidation = formElement => {
   const popupValidator = new FormValidator(validSettings, formElement);
   popupValidator.enableValidation();
 };
