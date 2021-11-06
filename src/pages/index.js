@@ -10,6 +10,8 @@ import Section from '../components/Section';
 import Card from '../components/Сard';
 // ----------------------------------------------------------userinfo
 import UserInfo from '../components/UserInfo';
+// -------------------------------------------------------imageloader
+import ImageLoader from '../components/ImageLoader';
 // -------------------------------------------------------------modal
 import PopupWithImage from '../components/PopupWithImage';
 
@@ -26,11 +28,10 @@ import {
   userNameSelector,
   userCaptionSelector,
   userAvatarSelector,
-  avatarEditSelector,
   avatarSpinner,
   popupEditInputName,
   popupEditInputAbout,
-  popupEditSelector,
+  popupEditProfileSelector,
   popupList,
   popupAvatarSelector,
   popupAddSelector,
@@ -39,18 +40,22 @@ import {
   containerSelector,
   cardTemplateSelector,
   avatarErrorClass,
-  addNewCardBtnSelector,
-  userEditBtnSelector
+  cardImageErrorClass,
+  addCardBtn,
+  editProfileBtn,
+  avatarEditBtn
 } from '../utils/variables.js';
-
-// ----------------------------------------------------avatar loader
-
-import ImageLoader from '../components/ImageLoader';
-
-export const api = new Api(fetchParams);
 
 let currentUserId = null;
 let currentCard = null;
+
+const api = new Api(fetchParams);
+
+const avatarImageLoader = new ImageLoader(
+  profileAvatar,
+  avatarSpinner,
+  avatarErrorClass
+);
 
 // --------------------заполняет форму попапа редактирования профиля
 
@@ -76,8 +81,6 @@ const popupWithConfirm = new PopupWithConfirm(popupConfirmSelector, {
   }
 });
 
-// -----------------------------------------создание новой карточки
-
 function handleLikeClick(card, data) {
   const promise = card.isLiked()
     ? api.dislikeCard(data._id)
@@ -91,6 +94,17 @@ function handleLikeClick(card, data) {
     });
 }
 
+function cardImageloader(card, errorClass) {
+  const imageLoader = new ImageLoader(
+    card._cardImage,
+    card._spinner,
+    errorClass
+  );
+  imageLoader.initialize();
+}
+
+// -----------------------------------------создание новой карточки
+
 const createNewCard = data => {
   const card = new Card(data, currentUserId, cardTemplateSelector, {
     handleCardClick: data => popupImage.open(data),
@@ -98,7 +112,8 @@ const createNewCard = data => {
       currentCard = card;
       popupWithConfirm.open(data._id);
     },
-    handleLikeClick: () => handleLikeClick(card, data)
+    handleLikeClick: () => handleLikeClick(card, data),
+    cardImageloader: () => cardImageloader(card, cardImageErrorClass)
   });
   return card;
 };
@@ -114,12 +129,6 @@ const cards = new Section(
     }
   },
   containerSelector
-);
-
-const avatarImageLoader = new ImageLoader(
-  profileAvatar,
-  avatarSpinner,
-  avatarErrorClass
 );
 
 // ---------------------------------------загрузка данных с сервера
@@ -142,37 +151,37 @@ const userInfo = new UserInfo({
   userAvatarSelector
 });
 
-// ---------------------функционал попапа с уведичением фотографии
+// ---------------------функционал попапа с увеличением фотографии
 
 const popupImage = new PopupWithImage(popupImageSelector);
 
 // ---------------------функционал попапа с редактирования профиля
 
-const editInfoFormSubmitCallback = data => {
-  popupWithEditInfoForm.setBtnStatusSaving(true);
+const editProfileSubmitCallback = data => {
+  popupWithEditProfile.setBtnStatusSaving(true);
   api
     .setUserInfo(data)
     .then(res => {
       userInfo.setUserInfo(res);
-      popupWithEditInfoForm.close();
+      popupWithEditProfile.close();
     })
     .catch(err => {
       console.log('Ошибка редактирования профиля', err);
     })
     .finally(() => {
-      popupWithEditInfoForm.setBtnStatusSaving(false);
+      popupWithEditProfile.setBtnStatusSaving(false);
     });
 };
 
-const popupWithEditInfoForm = new PopupWithForm(
-  popupEditSelector,
-  editInfoFormSubmitCallback
+const popupWithEditProfile = new PopupWithForm(
+  popupEditProfileSelector,
+  editProfileSubmitCallback
 );
 
 // ------------------функционал попапа добавления новой карточки
 
-const addNewCardFormSubmitCallback = data => {
-  popupWithAddNewCardForm.setBtnStatusSaving(true);
+const addCardSubmitCallback = data => {
+  popupWithAddCard.setBtnStatusSaving(true);
   api
     .postCard(data)
     .then(res => {
@@ -184,52 +193,52 @@ const addNewCardFormSubmitCallback = data => {
       console.log('Ошибка добавления карточки', err);
     })
     .finally(() => {
-      popupWithAddNewCardForm.setBtnStatusSaving(false);
-      popupWithAddNewCardForm.close();
+      popupWithAddCard.setBtnStatusSaving(false);
+      popupWithAddCard.close();
     });
 };
 
-const popupWithAddNewCardForm = new PopupWithForm(
+const popupWithAddCard = new PopupWithForm(
   popupAddSelector,
-  addNewCardFormSubmitCallback
+  addCardSubmitCallback
 );
 
 // ------------------функционал попапа с редактирования аватара
 
-const avatarEditFormSubmitCallback = data => {
-  popupWithAvatarEditForm.setBtnStatusSaving(true);
+const avatarEditSubmitCallback = data => {
+  popupWithAvatarEdit.setBtnStatusSaving(true);
   avatarImageLoader.initialize();
   api
     .setAvatar(data)
     .then(res => {
       userInfo.setUserAvatar(res.avatar);
-      popupWithAvatarEditForm.close();
+      popupWithAvatarEdit.close();
     })
     .catch(err => {
       console.log('Ошибка установки аватара', err);
     })
     .finally(() => {
-      popupWithAvatarEditForm.setBtnStatusSaving(false);
+      popupWithAvatarEdit.setBtnStatusSaving(false);
     });
 };
-const popupWithAvatarEditForm = new PopupWithForm(
+const popupWithAvatarEdit = new PopupWithForm(
   popupAvatarSelector,
-  avatarEditFormSubmitCallback
+  avatarEditSubmitCallback
 );
 
 // -----------наложение слушателей на кнопки открытия попапов
 
-document.querySelector(userEditBtnSelector).addEventListener('click', () => {
+editProfileBtn.addEventListener('click', () => {
   renderProfileForm();
-  popupWithEditInfoForm.open();
+  popupWithEditProfile.open();
 });
 
-document.querySelector(addNewCardBtnSelector).addEventListener('click', () => {
-  popupWithAddNewCardForm.open();
+addCardBtn.addEventListener('click', () => {
+  popupWithAddCard.open();
 });
 
-document.querySelector(avatarEditSelector).addEventListener('click', () => {
-  popupWithAvatarEditForm.open();
+avatarEditBtn.addEventListener('click', () => {
+  popupWithAvatarEdit.open();
 });
 
 // -----------------------------------инициализация валидации
@@ -242,19 +251,3 @@ const setValidation = formElement => {
 popupList.forEach(popup => {
   setValidation(popup);
 });
-
-// ******************************************ЭТА ФУНКЦИЯ УБИРАЕТ БАГ!******************************************
-// **________________________________________________________________________________________________________**
-// **       При загрузке страницы на мгновение видны скрытые модальные окна. Баг возникает рандомно.         **
-// **    Так происходит из-за того, что окна скрыты с помощью комбинации CSS свойств visability              **
-// **    и opacity вместо свойства display для реализации анимации при открытии/закрытии, так как            **
-// **    свойство display не анимируется. Изменение этого свойства добавлением класса ломает анимацию.       **
-// **       Для решения этой проблемы, всем модальным окнам изначально применено свойство display: none;,    **
-// **    данная функция ассинхронно меняет это свойство, что позволяет избежать бага.                        **
-// **       Лучше способа не придумал, баг не критиный, но мне не нравится. Если есть идеи,                  **
-// **    как решить это лучше - поделитесь, буду признателен!                                                **
-// **________________________________________________________________________________________________________**
-const makePopupsVisible = popupList =>
-  popupList.forEach(popup => (popup.style.display = 'flex'));
-setTimeout(() => makePopupsVisible(popupList), 100);
-// ************************************************************************************************************

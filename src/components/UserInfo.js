@@ -1,5 +1,5 @@
 export default class UserInfo {
-  constructor({ userNameSelector, userCaptionSelector, userAvatarSelector}) {
+  constructor({ userNameSelector, userCaptionSelector, userAvatarSelector }) {
     this._userNameSelector = userNameSelector;
     this._userCaptionSelector = userCaptionSelector;
     this._userAvatarSelector = userAvatarSelector;
@@ -24,4 +24,4 @@ export default class UserInfo {
   setUserAvatar(avatarLink) {
     this._userAvatar.src = avatarLink;
   }
-} 
+}
