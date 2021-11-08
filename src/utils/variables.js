@@ -18,8 +18,6 @@ export const fetchParams = {
 // ------------------------------------------------------DOM-элементы
 //профиль
 const profile = document.querySelector('.profile');
-export const profileName = profile.querySelector('.profile__name');
-export const profileAbout = profile.querySelector('.profile__about');
 export const profileAvatar = profile.querySelector('.profile__avatar');
 export const avatarSpinner = profile.querySelector('.profile__spinner');
 //Pop-Up редактирования профиля

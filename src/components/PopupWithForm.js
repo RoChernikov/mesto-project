@@ -29,10 +29,14 @@ export default class PopupWithForm extends Popup {
     this._popupForm.addEventListener('submit', this._submitEvtHandler);
   }
 
+  _removeEventListeners() {
+    this._popupForm.removeEventListener('submit', this._submitEvtHandler);
+  }
+
   close() {
     super.close();
     this._popupForm.reset();
-    this._popupForm.removeEventListener('submit', this._submitEvtHandler);
+    this._removeEventListeners();
   }
 
   setBtnStatusSaving(isLoading) {

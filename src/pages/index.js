@@ -22,8 +22,6 @@ import PopupWithConfirm from '../components/PopupWithConfirm';
 import {
   validSettings,
   fetchParams,
-  profileName,
-  profileAbout,
   profileAvatar,
   userNameSelector,
   userCaptionSelector,
@@ -60,8 +58,9 @@ const avatarImageLoader = new ImageLoader(
 // --------------------заполняет форму попапа редактирования профиля
 
 const renderProfileForm = () => {
-  popupEditInputName.value = profileName.textContent;
-  popupEditInputAbout.value = profileAbout.textContent;
+  const userData = userInfo.getUserInfo();
+  popupEditInputName.value = userData.name;
+  popupEditInputAbout.value = userData.about;
 };
 
 // ----------------------функционал попапп с подтверждением удаления
@@ -139,7 +138,6 @@ api
     const [userData, cardsData] = data;
     currentUserId = userData._id;
     userInfo.setUserInfo(userData);
-    profileAvatar.setAttribute('src', `${userData.avatar}`);
     avatarImageLoader.initialize();
     cards.renderItems(cardsData);
   })
@@ -188,13 +186,13 @@ const addCardSubmitCallback = data => {
       const card = createNewCard(res);
       const cardElement = card.generateCard();
       cards.addItem(cardElement, 'append');
+      popupWithAddCard.close();
     })
     .catch(err => {
       console.log('Ошибка добавления карточки', err);
     })
     .finally(() => {
       popupWithAddCard.setBtnStatusSaving(false);
-      popupWithAddCard.close();
     });
 };
 
@@ -211,7 +209,7 @@ const avatarEditSubmitCallback = data => {
   api
     .setAvatar(data)
     .then(res => {
-      userInfo.setUserAvatar(res.avatar);
+      profileAvatar.src = res.avatar;
       popupWithAvatarEdit.close();
     })
     .catch(err => {
