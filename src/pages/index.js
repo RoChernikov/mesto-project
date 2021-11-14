@@ -44,7 +44,6 @@ import {
   avatarEditBtn
 } from '../utils/variables.js';
 
-let currentUserId = null;
 let currentCard = null;
 
 const api = new Api(fetchParams);
@@ -105,7 +104,7 @@ function cardImageloader(card, errorClass) {
 // -----------------------------------------создание новой карточки
 
 const createNewCard = data => {
-  const card = new Card(data, currentUserId, cardTemplateSelector, {
+  const card = new Card(data, userInfo.userId, cardTemplateSelector, {
     handleCardClick: data => popupImage.open(data),
     handleCardDelete: () => {
       currentCard = card;
@@ -120,16 +119,11 @@ const createNewCard = data => {
 // ----------------------------------------------отрисовка карточек
 
 const cards = new Section(
-  /*{
-    renderer: data => {
-      const card = createNewCard(data);
-      const cardElement = card.generateCard();
-      cards.addItem(cardElement, 'append');
-    }
-  },*/
   {
-    renderer: data => {
-      cards.addItem(createNewCard(data));
+    renderer: item => {
+      const card = createNewCard(item);
+      const cardElement = card.generateCard();
+      return cardElement;
     }
   },
   containerSelector
@@ -137,22 +131,21 @@ const cards = new Section(
 
 // ---------------------------------------загрузка данных с сервера
 
-api
-  .loadData()
-  .then(data => {
-    const [userData, cardsData] = data;
-    currentUserId = userData._id;
-    userInfo.setUserInfo(userData);
-    avatarImageLoader.initialize();
-    cards.renderItems(cardsData);
-  })
-  .catch(err => console.log(err));
-
 const userInfo = new UserInfo({
   userNameSelector,
   userCaptionSelector,
   userAvatarSelector
 });
+
+api
+  .loadData()
+  .then(data => {
+    const [userData, cardsData] = data;
+    userInfo.setUserInfo(userData);
+    avatarImageLoader.initialize();
+    cards.renderItems(cardsData);
+  })
+  .catch(err => console.log(err));
 
 // ---------------------функционал попапа с увеличением фотографии
 
@@ -188,9 +181,7 @@ const addCardSubmitCallback = data => {
   api
     .postCard(data)
     .then(res => {
-      const card = createNewCard(res);
-      const cardElement = card.generateCard();
-      cards.addItem(cardElement, 'append');
+      cards.addItem(res);
       popupWithAddCard.close();
     })
     .catch(err => {
@@ -213,7 +204,7 @@ const avatarEditSubmitCallback = data => {
   avatarImageLoader.initialize();
   api
     .setAvatar(data)
-    .then(res => {      
+    .then(res => {
       userInfo.setUserInfo(res);
       popupWithAvatarEdit.close();
     })
