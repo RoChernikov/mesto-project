@@ -1,90 +1,92 @@
-const token = '97ccf1bd-d259-459d-8352-7ffe6d750b35';
-const url = 'https://nomoreparties.co/v1/plus-cohort-2/';
-export const api = {
-  baseUrl: url,
-  headers: {
-    'authorization': token,
-    'Content-Type': 'application/json'
+export default class Api {
+  constructor({ baseUrl, headers }) {
+    this.baseUrl = baseUrl;
+    this.headers = headers;
   }
-};
 
-//---+++++Обработчик ответа сервера+++++---
-const getResponseData = res => {
-  if (res.ok) {
-    return res.json();
+  // ----------------------------------Запрашивает информацию о пользователе
+  getUserInfo() {
+    return fetch(`${this.baseUrl}users/me`, {
+      headers: this.headers
+    }).then(this._getResponseData);
   }
-  return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-};
 
-//---+++++Запрашивает информацию о пользователе+++++---
-export const getUserInfo = () => {
-  return fetch(`${api.baseUrl}users/me`, {
-    headers: api.headers
-  }).then(res => getResponseData(res));
-};
+  // ------------------------------------Обновляет информацию о пользователе
+  setUserInfo(profile) {
+    return fetch(`${this.baseUrl}users/me`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        name: profile.name,
+        about: profile.about
+      })
+    }).then(this._getResponseData);
+  }
 
-//---+++++Обновляет информацию о пользователе+++++---
-export const setUserInfo = profile => {
-  return fetch(`${api.baseUrl}users/me`, {
-    method: 'PATCH',
-    headers: api.headers,
-    body: JSON.stringify({
-      name: profile.name,
-      about: profile.about
-    })
-  }).then(res => getResponseData(res));
-};
+  // --------------------------------------------------Запрашивает карточки
+  getCards() {
+    return fetch(`${this.baseUrl}cards`, {
+      headers: this.headers
+    }).then(this._getResponseData);
+  }
 
-//---+++++Запрашивает карточки+++++---
-export const getCards = () => {
-  return fetch(`${api.baseUrl}cards`, {
-    headers: api.headers
-  }).then(res => getResponseData(res));
-};
+  // -------------------------------------------------------Постит карточки
+  postCard(newCard) {
+    return fetch(`${this.baseUrl}cards`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify({
+        name: newCard.title,
+        link: newCard.link
+      })
+    }).then(this._getResponseData);
+  }
 
-//---+++++Постит карточки+++++---
-export const postCard = newCard => {
-  return fetch(`${api.baseUrl}cards`, {
-    method: 'POST',
-    headers: api.headers,
-    body: JSON.stringify({
-      name: newCard.name,
-      link: newCard.link
-    })
-  }).then(res => getResponseData(res));
-};
+  // -----------------------------------------------------Удаляет карточки
+  deleteCard(id) {
+    return fetch(`${this.baseUrl}cards/${id}`, {
+      method: 'DELETE',
+      headers: this.headers
+    }).then(this._getResponseData);
+  }
 
-//---+++++Удаляет карточки+++++---
-export const deleteCard = id => {
-  return fetch(`${api.baseUrl}cards/${id}`, {
-    method: 'DELETE',
-    headers: api.headers
-  }).then(res => getResponseData(res));
-};
+  // -----------------------------------------------------Добавляет лайк
+  likeCard(id) {
+    return fetch(`${this.baseUrl}cards/likes/${id}`, {
+      method: 'PUT',
+      headers: this.headers
+    }).then(this._getResponseData);
+  }
 
-//---+++++Добавляет лайк карточке+++++---
-export const likeCard = id => {
-  return fetch(`${api.baseUrl}cards/likes/${id}`, {
-    method: 'PUT',
-    headers: api.headers
-  }).then(res => getResponseData(res));
-};
+  // ---------------------------------------------------------Удаляет лайк
+  dislikeCard(id) {
+    return fetch(`${this.baseUrl}cards/likes/${id}`, {
+      method: 'DELETE',
+      headers: this.headers
+    }).then(this._getResponseData);
+  }
 
-//---+++++Удаляет лайк у карточки+++++---
-export const dislikeCard = id => {
-  return fetch(`${api.baseUrl}cards/likes/${id}`, {
-    method: 'DELETE',
-    headers: api.headers
-  }).then(res => getResponseData(res));
-};
+  // ----------------------------------------------------Обновляет аватар
+  setAvatar(link) {
+    return fetch(`${this.baseUrl}users/me/avatar`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: link.avatarlink
+      })
+    }).then(this._getResponseData);
+  }
 
-//---+++++Обновляет аватар+++++---
-export const setAvatar = link => {
-  return fetch(`${api.baseUrl}users/me/avatar`, {
-    method: 'PATCH',
-    headers: api.headers,
-    body: JSON.stringify({
-      avatar: `${link}`
-    })
-  }).then(res => getResponseData(res));
-};
+  // -----------------------------------------------Загрузка всех данных
+  loadData() {
+    return Promise.all([this.getUserInfo(), this.getCards()]);
+  }
+
+  // -------------------------------------------Обработчик ответа сервера
+  _getResponseData(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
+  }
+}
