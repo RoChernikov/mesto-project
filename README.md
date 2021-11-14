@@ -21,7 +21,7 @@
 - CSS - animation
 - Методология BEM
 - Файловая структура BEM Nested
-- JavaScript (Asynchronous JS, DOM API, Fetch API)
+- JavaScript (OOP, Asynchronous JS, DOM API, Fetch API)
 - Валидация форм на стороне пользователя
 - Адаптивная верстка (мобильные устройства, планшеты, десктопы)
 - Webpack
@@ -116,10 +116,6 @@
 
 `npm install --save-dev cross-env` - _пакет для использования глобальных переменных_
 
-## Будущая доработка проекта будет включать в себя:
-
-- Перенос проекта на ООП
-
 ## Ссылки:
 
 [Макет 1](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
@@ -135,9 +131,3 @@
 - [По вопросам доработки сайта](https://t.me/ro_runner)
 
 ## Проектная работа: "Mesto". Создана в рамках учебы в [Яндекс.Практикум](https://praktikum.yandex.ru/) на курсе ["Веб-разработчик плюс"](https://practicum.yandex.ru/web-plus/).
-
-## Второй контрибьютор:
-
-Наталия Солнцева (You.allure@gmail.com)
-
-- [Сслыка на Github](https://github.com/NatashaSolntseva)
