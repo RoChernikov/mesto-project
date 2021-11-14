@@ -69,6 +69,9 @@ export default class FormValidator {
     this._formElement.addEventListener('reset', () => {
       this._buttonElement.classList.add(this._inactiveButtonClass);
       this._buttonElement.setAttribute('disabled', 'disabled'); // отключение кнопки сабмита
+      this._inputList.forEach((inputElement) => {
+        this._hideInputError(inputElement)
+      }); // очищение ошибок, если пользователь введ что-то не то и закрыл попап, при следующем открытии ошибок не будет видно
     });
     this._inputList.forEach(inputElement => {
       inputElement.addEventListener('input', () => {

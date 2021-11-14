@@ -94,13 +94,12 @@ export default class Card {
   }
 
   _setEventListeners() {
-    this._card
-      .querySelector('.cards__trash-btn')
+    this._trashBtn
       .addEventListener('click', () => this._handleCardDelete());
-    this._card
-      .querySelector('.cards__like-btn')
+    this._likeBtn
       .addEventListener('click', () => this._handleLikeClick());
-    this._card.querySelector('.cards__image').addEventListener('click', () => {
+    this._cardImage
+      .addEventListener('click', () => {
       this._handleCardClick({ name: this._name, link: this._link });
     });
   }

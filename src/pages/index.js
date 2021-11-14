@@ -120,11 +120,16 @@ const createNewCard = data => {
 // ----------------------------------------------отрисовка карточек
 
 const cards = new Section(
-  {
+  /*{
     renderer: data => {
       const card = createNewCard(data);
       const cardElement = card.generateCard();
       cards.addItem(cardElement, 'append');
+    }
+  },*/
+  {
+    renderer: data => {
+      cards.addItem(createNewCard(data));
     }
   },
   containerSelector
@@ -208,8 +213,8 @@ const avatarEditSubmitCallback = data => {
   avatarImageLoader.initialize();
   api
     .setAvatar(data)
-    .then(res => {
-      profileAvatar.src = res.avatar;
+    .then(res => {      
+      userInfo.setUserInfo(res);
       popupWithAvatarEdit.close();
     })
     .catch(err => {
