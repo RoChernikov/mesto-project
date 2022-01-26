@@ -14,6 +14,8 @@
 - Поставить / убрать лайк
 - Открытие фотографии в полном размере
 
+<a  href="http://rochernikov.github.io/mesto-project/" target="_blank" align="center"><img src="./readme_src/demo.gif" width="100%" alt="демо"></a>
+
 ### Технологии, использованные при создании:
 
 - Flexbox
