@@ -2,6 +2,7 @@
   width: 22px;
   height: 19px;
   background-image: url(../../../images/like_btn_ico/like_btn_ico_disabled.svg);
+  -webkit-tap-highlight-color: transparent;
   transition: all 0.08s linear;
 }
 
