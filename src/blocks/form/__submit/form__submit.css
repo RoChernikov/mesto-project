@@ -8,6 +8,7 @@
   background-color: #000;
   color: #fff;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   transition: opacity 0.08s linear, transform 0.05s linear;
 }
 

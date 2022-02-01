@@ -2,6 +2,7 @@
   width: 40px;
   height: 40px;
   background-image: url(../../../images/popup-close-ico.svg);
+  -webkit-tap-highlight-color: transparent;
   background-size: contain;
   position: absolute;
   top: -44px;
